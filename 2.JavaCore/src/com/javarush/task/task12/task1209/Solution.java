@@ -19,5 +19,8 @@ public class Solution {
     public static double min(double a, double b){
         return Double.min(a, b);
     }
+
+
+
     //Напишите тут ваши методы
 }
