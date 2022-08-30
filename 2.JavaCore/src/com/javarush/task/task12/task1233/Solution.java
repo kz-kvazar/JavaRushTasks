@@ -4,8 +4,6 @@ package com.javarush.task.task12.task1233;
 Изоморфы наступают
 */
 
-import java.util.Arrays;
-
 public class Solution {
     public static void main(String[] args) throws Exception {
         int[] data = new int[]{1, 2, 3, 5, -2, -8, 0, 77, 5, 5};
@@ -18,20 +16,18 @@ public class Solution {
 
     public static Pair<Integer, Integer> getMinimumAndIndex(int[] array) {
         if (array == null || array.length == 0) {
-            return new Pair<Integer, Integer>(null, null);
+            return new Pair<>(null, null);
         }
-        int min = array[0];
-        int count = 0;
+        int index = 0;
         for (int i = 0; i < array.length; i++) {
-            if (array[i]<min){
-                min = array[i];
-                count = i;
+            if (array[i] < array[index]) {
+                index = i;
             }
         }
 
         //напишите тут ваш код
 
-        return new Pair<Integer, Integer>(min, count);
+        return new Pair<>(array[index], index);
     }
 
     public static class Pair<X, Y> {
