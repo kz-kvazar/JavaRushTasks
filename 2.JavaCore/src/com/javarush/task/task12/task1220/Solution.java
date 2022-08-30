@@ -10,7 +10,21 @@ public class Solution {
     }
 
     public abstract class Human implements CanRun, CanSwim{
+        /**
+         *
+         */
+        @Override
+        public void run() {
 
+        }
+
+        /**
+         *
+         */
+        @Override
+        public void swim() {
+
+        }
     }
 
     public interface CanRun{
