@@ -26,14 +26,11 @@ public class Solution {
     }
 
     public static class BigFox extends Fox{
-        public Color Color() {
+        public Color getColor() {
             return Color.GRAY;
         }
 
-        @Override
-        public Color getColor() {
-            return null;
         }
     }
 
-}
+
