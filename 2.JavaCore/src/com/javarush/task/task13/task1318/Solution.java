@@ -10,11 +10,13 @@ import java.util.Scanner;
 public class Solution {
     public static void main(String[] args) throws IOException {
         // напишите тут ваш код
+        Scanner sc = new Scanner(System.in);
+        String b = sc.nextLine();
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
 
-        String a = reader.readLine();
+        //String a = reader.readLine();
         reader.close();
-        File file = new File(a);
+        File file = new File(b);
 
         FileInputStream f = new FileInputStream(file);
 
@@ -25,6 +27,24 @@ public class Solution {
         }
 
         f.close();
+
+
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+//        String sourceFileName = reader.readLine();
+//        FileInputStream fileInputStream = new FileInputStream(sourceFileName);
+//
+//        Scanner scanner = new Scanner(fileInputStream);
+//        StringBuilder builder = new StringBuilder();
+//
+//        while (scanner.hasNextLine()) {
+//            builder.append(scanner.nextLine()).append("\n");
+//        }
+//
+//        System.out.print(builder.toString());
+//
+//        scanner.close();
+//        reader.close();
+
 
     }
 }
