@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Solution {
     public static void main(String[] args) {
-        List<Apartment> apartments = new ArrayList<Apartment>();
+        List<Apartment> apartments = new ArrayList<>();
         apartments.add(new OneRoomApt());
         apartments.add(new TwoRoomApt());
         apartments.add(new ThreeRoomApt());
