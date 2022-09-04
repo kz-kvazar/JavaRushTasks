@@ -9,7 +9,9 @@ public class Solution {
         //System.out.println(String.format("Я - курица. Моя страна - %s . Я несу %s яиц в месяц.",Country.BELARUS,0));
         Hen hen = HenFactory.getHen(Country.BELARUS);
         //hen.getCountOfEggsPerMonth();
-        System.out.println(hen.getDescription());
+        if (hen != null) {
+            System.out.println(hen.getDescription());
+        }
     }
 
     static class HenFactory {
