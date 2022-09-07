@@ -16,27 +16,24 @@ public class Solution {
         i1 = Integer.valueOf(bufferedReader.readLine());
         i2 = Integer.valueOf(bufferedReader.readLine());
         bufferedReader.close();
-        Integer nod = NOD(i1, i2);
+        System.out.println(NOD(i1, i2));
 
-        while (nod != 0) {
-            nod = NOD(i1, i2);
-        }
+
+
     }
 
-    public static Integer NOD(Integer i1, Integer i2) {
-        if (i1 > i2 && i1 % i2 != 0) {
-            return Solution.i1 = i1 % i2;
-        } else if (i1 > i2 && i1 % i2 == 0) {
-            System.out.println(i2);
-            return 0;
-        } else if (i2 > i1 && i2 % i1 != 0) {
-            return Solution.i2 = i2 % i1;
-        } else if (i2 > i1 && i2 % i1 == 0) {
-            System.out.println(i1);
-            return 0;
+    public static Integer NOD(Integer a, Integer b) {
+        while (!a.equals(b)){
+            if (a > b) {
+                a = a - b;
+                System.out.println("A is "+a);
+            }
+            else  {
+                b = b - a;
+                System.out.println("B is " +b);
+            }
         }
-        System.out.println(i1);
-        return 0;
-    }
+        return a;
+}
 }
 
