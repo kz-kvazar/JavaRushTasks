@@ -24,14 +24,8 @@ public class Solution {
 
     public static Integer NOD(Integer a, Integer b) {
         while (!a.equals(b)){
-            if (a > b) {
-                a = a - b;
-                System.out.println("A is "+a);
-            }
-            else  {
-                b = b - a;
-                System.out.println("B is " +b);
-            }
+            if (a > b) a = a - b;
+            else b = b - a;
         }
         return a;
 }
