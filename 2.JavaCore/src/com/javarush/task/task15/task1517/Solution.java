@@ -9,7 +9,7 @@ public class Solution {
 
     static {
        //B = A/0;
-        if (true)throw new ArithmeticException("rfgtw");
+        if (true)throw new ArithmeticException();
         //throw an exception here - выбросьте эксепшн тут
     }
 
