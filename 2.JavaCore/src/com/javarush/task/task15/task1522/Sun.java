@@ -11,7 +11,9 @@ public class Sun implements Planet {
 
         if (instance == null) {
             synchronized (Sun.class) {
-                instance = new Sun();
+                if (instance == null) {
+                    instance = new Sun();
+                }
             }
         }
         return instance;

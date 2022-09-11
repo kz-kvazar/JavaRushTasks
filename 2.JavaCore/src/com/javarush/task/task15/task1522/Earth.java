@@ -9,7 +9,9 @@ public class Earth implements Planet {
     public static Earth getInstance() {
         if (instance == null) {
             synchronized (Earth.class) {
-                instance = new Earth();
+                if (instance == null){
+                    instance = new Earth();
+                }
             }
         }
         return instance;
