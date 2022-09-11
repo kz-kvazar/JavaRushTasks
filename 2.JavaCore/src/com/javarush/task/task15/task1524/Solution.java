@@ -19,10 +19,6 @@ public class Solution {
 
     public String name = "First name";
 
-//    static {
-//        init();
-//    }
-
     public Solution() {
         System.out.println("Solution constructor");
         printAllFields(this);
