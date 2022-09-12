@@ -58,11 +58,11 @@ class Horse extends Thread {
     }
 
     public void run() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < 1001; i++) {   // Delay
-            s += "" + i;
+            s.append(i);
             if (i == 1000) {
-                s = " has finished the race!";
+                s = new StringBuilder(" has finished the race!");
                 System.out.println(getName() + s);
                 isFinished = true;
             }
