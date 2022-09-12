@@ -21,7 +21,7 @@ public class Solution {
     }
 
     public static class Stopwatch extends Thread {
-        private Runner owner;
+        private final Runner owner;
         private int stepNumber;
 
         public Stopwatch(Runner runner) {
@@ -34,6 +34,7 @@ public class Solution {
                     doStep();
                 }
             } catch (InterruptedException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -47,8 +48,8 @@ public class Solution {
 
     public static class Runner {
         Stopwatch stopwatch;
-        private String name;
-        private int speed;
+        private final String name;
+        private final int speed;
 
         public Runner(String name, int speed) {
             this.name = name;
