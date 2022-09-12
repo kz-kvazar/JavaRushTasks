@@ -15,7 +15,7 @@ public class Solution {
     }
 
     public static class Clock extends Thread {
-        private String cityName;
+        private final String cityName;
         private int hours;
         private int minutes;
         private int seconds;
@@ -53,9 +53,9 @@ public class Solution {
                 hours = 0;
             }
             if (hours == 0 && minutes == 0 && seconds == 0) {
-                System.out.println(String.format("В г. %s сейчас полночь!", cityName));
+                System.out.printf("В г. %s сейчас полночь!%n", cityName);
             } else {
-                System.out.println(String.format("В г. %s сейчас %d:%d:%d!", cityName, hours, minutes, seconds));
+                System.out.printf("В г. %s сейчас %d:%d:%d!%n", cityName, hours, minutes, seconds);
             }
         }
     }
