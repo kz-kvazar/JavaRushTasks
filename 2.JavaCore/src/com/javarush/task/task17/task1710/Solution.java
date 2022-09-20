@@ -12,7 +12,7 @@ CRUD
 */
 
 public class Solution {
-    public static List<Person> allPeople = new ArrayList<Person>();
+    public static List<Person> allPeople = new ArrayList<>();
 
     static {
         allPeople.add(Person.createMale("Иванов Иван", new Date()));  //сегодня родился    id=0
@@ -36,8 +36,6 @@ public static SimpleDateFormat simpleDateFormat1 = new SimpleDateFormat("dd/MM/y
             case "-r": {
                 int id = Integer.parseInt(args[1]);
                 String name = allPeople.get(id).getName();
-                Sex sex = allPeople.get(id).getSex();
-
                 System.out.println(name + " " + (allPeople.get(id).getSex() == Sex.MALE ? "м" : "ж") + " " + simpleDateFormat2.format(allPeople.get(id).getBirthDate()));
                 break;
             }
