@@ -43,7 +43,6 @@ public class Solution {
                         allPeople.get(id).setSex(args[i + 2].equals("м") ? Sex.MALE : Sex.FEMALE);
                         allPeople.get(id).setName(name);
                         allPeople.get(id).setBirthDate(date);
-                        System.out.println(allPeople.size());
                     }
                 }
                 break;
