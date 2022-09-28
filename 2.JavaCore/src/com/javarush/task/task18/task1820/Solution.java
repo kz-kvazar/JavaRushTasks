@@ -16,9 +16,9 @@ public class Solution {
             while (fileReader.ready()) {
                 String[] strings = fileReader.readLine().split(" ");
                 for (String s : strings) {
-                    double d = Double.parseDouble(s);
-                    long l = Math.round(d);
-                    fileWriter.print(l + " ");
+                    double number = Double.parseDouble(s);
+                    long roundedNumber = Math.round(number);
+                    fileWriter.print(roundedNumber + " ");
                 }
             }
         }
