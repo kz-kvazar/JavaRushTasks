@@ -1,9 +1,9 @@
-package com.javarush.task.task19.task1925;
+package com.javarush.task.task19.task1923;
 
 import java.io.*;
 
 /* 
-Длинные слова
+Слова с цифрами
 */
 
 public class Solution {
@@ -12,10 +12,10 @@ public class Solution {
         try (BufferedReader reader = new BufferedReader(new FileReader(args[0]));
              BufferedWriter writer = new BufferedWriter(new FileWriter(args[1]))) {
             while (reader.ready()) {
-                String[] words = reader.readLine().split("[ \\n]");
-                for (String s : words) {
-                    if (s.length() > 6) {
-                        stringBuilder.append(s).append(",");
+                String[] lines = reader.readLine().split(" ");
+                for (String s : lines) {
+                    if (s.matches(".*[0-9].*")) {
+                        stringBuilder.append(s).append(" ");
                     }
                 }
             }
