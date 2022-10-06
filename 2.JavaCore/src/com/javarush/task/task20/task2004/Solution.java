@@ -29,6 +29,7 @@ public class Solution {
 
             loadedObject.load(inputStream);
             //here check that the classWithStatic object is equal to the loadedObject object - проверьте тут, что classWithStatic и loadedObject равны
+            System.out.println(loadedObject.equals(classWithStatic));
 
             outputStream.close();
             inputStream.close();
@@ -60,9 +61,10 @@ public class Solution {
             //implement this method - реализуйте этот метод
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             if (reader.ready()){
+                ClassWithStatic loaded = new ClassWithStatic();
                 staticString = reader.readLine();
-                this.i = Integer.parseInt(reader.readLine());
-                this.j = Integer.parseInt(reader.readLine());
+                loaded.i = Integer.parseInt(reader.readLine());
+                loaded.j = Integer.parseInt(reader.readLine());
             }
         }
 
