@@ -48,7 +48,7 @@ public class Solution {
         public int i;
         public int j;
 
-        public void save(OutputStream outputStream) throws Exception {
+        public void save(OutputStream outputStream) {
             //implement this method - реализуйте этот метод
             PrintWriter printWriter = new PrintWriter(outputStream);
             printWriter.println(staticString);
@@ -61,10 +61,9 @@ public class Solution {
             //implement this method - реализуйте этот метод
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
             if (reader.ready()){
-                ClassWithStatic loaded = new ClassWithStatic();
                 staticString = reader.readLine();
-                loaded.i = Integer.parseInt(reader.readLine());
-                loaded.j = Integer.parseInt(reader.readLine());
+                this.i = Integer.parseInt(reader.readLine());
+                this.j = Integer.parseInt(reader.readLine());
             }
         }
 
