@@ -52,8 +52,8 @@ public class Solution {
             //implement this method - реализуйте этот метод
             PrintWriter printWriter = new PrintWriter(outputStream);
             printWriter.println(staticString);
-            printWriter.println(i);
-            printWriter.println(j);
+            printWriter.println(this.i);
+            printWriter.println(this.j);
             printWriter.close();
         }
 
