@@ -26,7 +26,7 @@ public class Solution implements Serializable {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
-        oos.writeObject(instance);
+        oos.writeObject(instance.readResolve());
         oos.close();
 
         return byteArrayOutputStream;
