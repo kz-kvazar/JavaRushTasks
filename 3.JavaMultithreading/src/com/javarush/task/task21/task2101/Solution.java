@@ -28,6 +28,7 @@ public class Solution {
         String currentBinary;
         for (byte aByte : bytes) {
 //            System.out.print(0xFF & aByte);
+            //System.out.println(Byte.toUnsignedInt(aByte));
 //            System.out.print(".");
             currentBinary = Integer.toBinaryString(256 + (int) aByte);
             System.out.print(currentBinary.substring(currentBinary.length() - 8) + " ");
