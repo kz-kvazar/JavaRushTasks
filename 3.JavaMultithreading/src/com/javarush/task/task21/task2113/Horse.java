@@ -20,10 +20,15 @@ public class Horse {
     }
 
     public void move() {
-        distance += speed * (Math.random() + 0.0001);
+        distance += speed * (Math.random());
     }
 
     public void print() {
+        StringBuilder dots = new StringBuilder();
+        for (int i = 0; i < (int) distance; i++) {
+            dots.append(".");
+        }
+        System.out.println(dots + name);
     }
 
     public double getSpeed() {
