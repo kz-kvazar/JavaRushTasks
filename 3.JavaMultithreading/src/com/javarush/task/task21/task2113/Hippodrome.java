@@ -28,7 +28,6 @@ public class Hippodrome {
             print();
             Thread.sleep(200);
         }
-        printWinner();
     }
     public void move(){
         for (Horse h : horses) {
@@ -58,5 +57,7 @@ public class Hippodrome {
         horse.add(new Horse("Плотва", 3,0));
         game = new Hippodrome(horse);
         game.run();
+        game.printWinner();
+
     }
 }
