@@ -12,9 +12,14 @@ public class Hippodrome {
         this.horses = horses;
     }
 
-    private List<Horse> horses = new ArrayList<>();
+    private List<Horse> horses;
 
+    static Hippodrome game;
     public static void main(String[] args) {
-
+        List<Horse> horse = new ArrayList<>();
+        horse.add(new Horse("Степан", 3,0));
+        horse.add(new Horse("Молния", 3,0));
+        horse.add(new Horse("Плотва", 3,0));
+        game = new Hippodrome(horse);
     }
 }
