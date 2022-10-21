@@ -8,12 +8,27 @@ public class Hippodrome {
         return horses;
     }
 
+    public Horse getWinner(){
+        double distance = 0d;
+        Horse winner = null;
+        for (Horse h : horses) {
+            if (h.getDistance() > distance) {
+                distance = h.getDistance();
+                winner = h;
+            }
+        }
+        return winner;
+    }
+    public void printWinner(){
+        System.out.println("Winner is " + getWinner().getName() + "!");
+    }
     public void  run() throws InterruptedException {
         for (int i = 0; i < 100; i++) {
             move();
             print();
             Thread.sleep(200);
         }
+        printWinner();
     }
     public void move(){
         for (Horse h : horses) {
