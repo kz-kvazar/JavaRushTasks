@@ -5,12 +5,24 @@ public class Horse {
     private double speed;
     private double distance;
 
+    public Horse(String name, double speed, double distance) {
+        this.name = name;
+        this.speed = speed;
+        this.distance = distance;
+    }
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void move() {
+    }
+
+    public void print() {
     }
 
     public double getSpeed() {
@@ -26,12 +38,6 @@ public class Horse {
     }
 
     public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    public Horse(String name, double speed, double distance) {
-        this.name = name;
-        this.speed = speed;
         this.distance = distance;
     }
 }
