@@ -20,7 +20,14 @@ public class Hippodrome {
             h.move();
         }
     }
-    public void print(){}
+    public void print(){
+        for (Horse h : horses) {
+            h.print();
+        }
+        for (int i = 0; i < 10; i++) {
+            System.out.println();
+        }
+    }
     
     public Hippodrome(List<Horse> horses) {
         this.horses = horses;
@@ -29,11 +36,12 @@ public class Hippodrome {
     private List<Horse> horses;
 
     static Hippodrome game;
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         List<Horse> horse = new ArrayList<>();
         horse.add(new Horse("Степан", 3,0));
         horse.add(new Horse("Молния", 3,0));
         horse.add(new Horse("Плотва", 3,0));
         game = new Hippodrome(horse);
+        game.run();
     }
 }
