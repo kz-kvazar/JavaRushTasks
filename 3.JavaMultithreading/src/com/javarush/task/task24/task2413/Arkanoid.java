@@ -57,6 +57,7 @@ public class Arkanoid {
     public void move(){}
     public static Arkanoid game;
 
+
     public static void main(String[] args) {
         
     }
