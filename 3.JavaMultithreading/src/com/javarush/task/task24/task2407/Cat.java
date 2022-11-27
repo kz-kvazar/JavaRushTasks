@@ -30,7 +30,7 @@ public class Cat implements Pet {
      * @return экземпляр класса CatPet
      */
     public Sayable toSayable(final int i) {
-        Sayable CatPet = new Sayable() {
+        class CatPet implements Sayable{
             @Override
             public String say() {
                 if (i < 1){
@@ -43,7 +43,7 @@ public class Cat implements Pet {
                     return (name + " говорит м" + sb + "у!");
                 }
             }
-        };
-        return CatPet;
+        }
+        return new CatPet();
     }
 }
