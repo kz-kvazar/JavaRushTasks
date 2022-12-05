@@ -20,4 +20,7 @@ public class FakeModel implements Model {
         us.add(new User("B", 2, 1));
         modelData.setUsers(us);
     }
+    public void loadDeletedUsers() {
+        throw  new UnsupportedOperationException();
+    }
 }
