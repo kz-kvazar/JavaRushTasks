@@ -15,6 +15,9 @@ public class MainModel implements Model{
     public ModelData getModelData() {
         return modelData;
     }
+    private List<User> getAllUsers(){
+        return userService.filterOnlyActiveUsers(userService.getUsersBetweenLevels(1, 100));
+    }
     public void loadDeletedUsers() {
         modelData.setDisplayDeletedUserList(true);
         List<User> users = userService.getAllDeletedUsers();
@@ -22,11 +25,20 @@ public class MainModel implements Model{
     }
     public void loadUsers() {
         modelData.setDisplayDeletedUserList(false);
-        modelData.setUsers(userService.getUsersBetweenLevels(1, 100));
+        modelData.setUsers(getAllUsers());
     }
     public void loadUserById(long userId) {
         User user = userService.getUsersById(userId);
         modelData.setActiveUser(user);
     }
 
+    @Override
+    public void deleteUserById(long id) {
+        userService.deleteUser(id);
+        modelData.setUsers(getAllUsers());
+    }
+    public void changeUserData(String name, long id, int level){
+        User user = userService.createOrUpdateUser(name, id, level);
+        modelData.setUsers(getAllUsers());
+    }
 }
