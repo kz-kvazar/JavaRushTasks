@@ -22,7 +22,6 @@ public class Solution extends Thread {
         //implement logic here
         try {
             socket.close();
-            in.close();
         } catch (IOException ignored) {
         } finally {
             super.interrupt();
