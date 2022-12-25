@@ -10,17 +10,18 @@ public class Human {
     public static final int THIRD = 3;
     public static final int FOURTH = 4;
     public static int nextId = 0;
+    //protected final Soldier soldier = new Soldier();
     protected int age;
     protected String name;
     protected int course;
     protected int[] size;
-    protected boolean isSoldier;
     private int id;
     private int bloodGroup;
     private List<Human> children = new ArrayList<>();
 
-    public Human(boolean isSoldier) {
-        this.isSoldier = isSoldier;
+    public Human(String name , int age) {
+        this.name = name;
+        this.age = age;
         this.id = nextId;
         nextId++;
     }
@@ -66,11 +67,6 @@ public class Human {
     }
 
     public void live() {
-        if (isSoldier)
-            fight();
-    }
-
-    public void fight() {
     }
 
     public int getId() {
