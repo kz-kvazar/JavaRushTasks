@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Human {
+public class Human implements Alive{
     public static final int FIRST = 1;
     public static final int SECOND = 2;
     public static final int THIRD = 3;
@@ -13,7 +13,6 @@ public class Human {
     //protected final Soldier soldier = new Soldier();
     protected int age;
     protected String name;
-    protected int course;
     protected int[] size;
     private int id;
     private int bloodGroup;
@@ -48,10 +47,6 @@ public class Human {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getCourse() {
-        return course;
     }
 
     public List<Human> getChildren() {
