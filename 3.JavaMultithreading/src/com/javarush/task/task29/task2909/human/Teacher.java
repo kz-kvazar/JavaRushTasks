@@ -1,12 +1,11 @@
 package com.javarush.task.task29.task2909.human;
 
 public class Teacher extends UniversityPerson {
-    protected int course;
+
     private int numberOfStudents;
 
-
     public Teacher(String name, int age, int numberOfStudents) {
-        super(name,age);
+        super(name, age);
         this.numberOfStudents = numberOfStudents;
     }
 
@@ -14,17 +13,10 @@ public class Teacher extends UniversityPerson {
         teach();
     }
 
-    @Override
-    public String getPosition() {
-        return "Преподаватель";
-    }
-
     public void teach() {
     }
 
-
-
-    public int getCourse() {
-        return course;
+    public String getPosition() {
+        return "Преподаватель";
     }
 }

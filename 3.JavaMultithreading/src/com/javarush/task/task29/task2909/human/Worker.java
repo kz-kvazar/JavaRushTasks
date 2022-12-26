@@ -1,15 +1,11 @@
 package com.javarush.task.task29.task2909.human;
 
-public class Worker extends Human{
+public class Worker extends Human {
     private double salary;
     public String company;
 
     public Worker(String name, int age) {
-        super(name,age);
-    }
-
-    public void live() {
-        super.live();
+        super(name, age);
     }
 
     public double getSalary() {
