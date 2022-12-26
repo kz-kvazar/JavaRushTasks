@@ -21,11 +21,11 @@ public class University {
         return null;
     }
 
-    public Student getStudentWithMaxAverageGrade(double averageGrade) {
+    public Student getStudentWithMaxAverageGrade() {
         if (students.size() > 0){
             Student student = students.get(0);
             for (Student s :students) {
-                if (s.getAverageGrade() > s.getAverageGrade()){
+                if (s.getAverageGrade() > student.getAverageGrade()){
                     student = s;
                 }
             }
@@ -38,7 +38,7 @@ public class University {
         if (students.size() > 0){
             Student student = students.get(0);
             for (Student s :students) {
-                if (s.getAverageGrade() < s.getAverageGrade()){
+                if (s.getAverageGrade() < student.getAverageGrade()){
                     student = s;
                 }
             }
@@ -47,9 +47,10 @@ public class University {
         return null;
     }
 
-    public void expel(Student student){
+    public void expel(Student student) {
         students.remove(student);
     }
+
     public List<Student> getStudents() {
         return students;
     }
