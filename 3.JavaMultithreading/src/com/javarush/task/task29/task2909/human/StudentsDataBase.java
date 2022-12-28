@@ -23,16 +23,16 @@ public class StudentsDataBase {
     }
 
     public static void findDimaOrSasha() {
-        for (int i = 0; i < students.size(); i++) {
-                if (students.get(i).getName().equals("Dima")) {
-                    System.out.println("Студент Dima есть в базе.");
-                    break;
-                }
-
-                if (students.get(i).getName().equals("Sasha")) {
-                    System.out.println("Студент Sasha есть в базе.");
-                    break;
-                }
+        for (Student student : students) {
+            if (student.getName().equals("Dima")) {
+                System.out.println("Студент Dima есть в базе.");
+                break;
             }
+
+            if (student.getName().equals("Sasha")) {
+                System.out.println("Студент Sasha есть в базе.");
+                break;
+            }
+        }
         }
     }
