@@ -5,14 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConsoleHelper {
-    private static BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
-
-    public static void writeMessage(String message) {
+   private static BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(System.in));
+    public static void writeMessage(String message){
         System.out.println(message);
     }
     public static String readString(){
         try {
-            return bis.readLine();
+            return bufferedReader.readLine();
         } catch (IOException e) {
             System.out.println("Произошла ошибка при попытке ввода текста. Попробуйте еще раз.");
            return readString();
