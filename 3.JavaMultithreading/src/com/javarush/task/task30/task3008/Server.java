@@ -9,7 +9,7 @@ public class Server {
         ConsoleHelper.writeMessage("Введите порт сервера:");
         int port = ConsoleHelper.readInt();
 
-        try (ServerSocket serverSocket = new ServerSocket(port);){
+        try (ServerSocket serverSocket = new ServerSocket(port)){
             while (true) {
                 Handler handler = new Handler(serverSocket.accept());
                 handler.start();
@@ -24,6 +24,11 @@ public class Server {
 
         public Handler(Socket socket) {
             this.socket = socket;
+        }
+
+        @Override
+        public void run() {
+            super.run();
         }
     }
 }
