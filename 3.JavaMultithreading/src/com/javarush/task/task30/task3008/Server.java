@@ -12,7 +12,6 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ConsoleHelper.writeMessage("Введите порт сервера:");
         int port = ConsoleHelper.readInt();
-        int i = 0;
 
         try (ServerSocket serverSocket = new ServerSocket(port)) {
             while (true) {
