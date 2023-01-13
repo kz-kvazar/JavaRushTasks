@@ -6,6 +6,7 @@ import com.javarush.task.task30.task3008.Message;
 import com.javarush.task.task30.task3008.MessageType;
 
 import java.io.IOException;
+import java.net.Socket;
 
 public class Client {
     protected Connection connection;
@@ -14,6 +15,20 @@ public class Client {
     public class SocketThread extends Thread {
         protected void processIncomingMessage(String message) {
             ConsoleHelper.writeMessage(message);
+        }
+
+        @Override
+        public void run() {
+            String serverAddress = getServerAddress();
+            int serverPort = getServerPort();
+
+            try (Socket socket = new Socket(serverAddress, serverPort)) {
+                connection = new Connection(socket);
+                clientHandshake();
+                clientMainLoop();
+            } catch (IOException | ClassNotFoundException e) {
+                notifyConnectionStatusChanged(false);
+            }
         }
 
         protected void informAboutAddingNewUser(String userName) {
@@ -34,10 +49,10 @@ public class Client {
         protected void clientHandshake() throws IOException, ClassNotFoundException {
             while (true) {
                 Message message = connection.receive();
-                if (message.getType()==(MessageType.NAME_REQUEST)) {
+                if (message.getType() == (MessageType.NAME_REQUEST)) {
                     String name = getUserName();
                     connection.send(new Message(MessageType.USER_NAME, name));
-                } else if (message.getType()==(MessageType.NAME_ACCEPTED)) {
+                } else if (message.getType() == (MessageType.NAME_ACCEPTED)) {
                     notifyConnectionStatusChanged(true);
                     return;
 
@@ -50,11 +65,11 @@ public class Client {
         protected void clientMainLoop() throws IOException, ClassNotFoundException {
             while (true) {
                 Message message = connection.receive();
-                if (message.getType()==(MessageType.TEXT)) {
+                if (message.getType() == (MessageType.TEXT)) {
                     processIncomingMessage(message.getData());
-                } else if (message.getType()==(MessageType.USER_ADDED)) {
+                } else if (message.getType() == (MessageType.USER_ADDED)) {
                     informAboutAddingNewUser(message.getData());
-                } else if (message.getType()==(MessageType.USER_REMOVED)) {
+                } else if (message.getType() == (MessageType.USER_REMOVED)) {
                     informAboutDeletingNewUser(message.getData());
                 } else {
                     throw new IOException("Unexpected MessageType");
