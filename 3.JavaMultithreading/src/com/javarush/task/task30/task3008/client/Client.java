@@ -12,7 +12,21 @@ public class Client {
     private volatile boolean clientConnected = false;
 
     public class SocketThread extends Thread {
-
+        protected void processIncomingMessage(String message){
+            ConsoleHelper.writeMessage(message);
+        }
+        protected void informAboutAddingNewUser(String userName){
+            ConsoleHelper.writeMessage(String.format("Участник с именем %s присоединился к чату", userName));
+        }
+        protected void informAboutDeletingNewUser(String userName){
+            ConsoleHelper.writeMessage(String.format("Участник с именем %s покинул чат", userName));
+        }
+        protected void notifyConnectionStatusChanged(boolean clientConnected){
+            Client.this.clientConnected = clientConnected;
+            synchronized (Client.this){
+                Client.this.notify();
+            }
+        }
     }
 
     protected String getServerAddress() {
@@ -56,13 +70,6 @@ public class Client {
             ConsoleHelper.writeMessage("Произошла ошибка во время работы клиента.");
             return;
         }
-
-        if (clientConnected)
-            ConsoleHelper.writeMessage("Соединение установлено. Для выхода наберите команду 'exit'.");
-        else
-            ConsoleHelper.writeMessage("Произошла ошибка во время работы клиента.");
-
-        // Пока не будет введена команда exit, считываем сообщения с консоли и отправляем их на сервер
         while (clientConnected) {
             String console = ConsoleHelper.readString();
             if (console.equals("exit")) {
@@ -75,7 +82,7 @@ public class Client {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Client client = new Client();
         client.run();
     }
