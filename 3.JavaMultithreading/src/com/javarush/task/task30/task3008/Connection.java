@@ -29,7 +29,8 @@ public class Connection implements Closeable {
             return (Message) in.readObject();
         }
     }
-    public SocketAddress getRemoteSocketAddress(){
+
+    public SocketAddress getRemoteSocketAddress() {
         return socket.getRemoteSocketAddress();
     }
 
