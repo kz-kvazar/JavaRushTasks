@@ -20,7 +20,7 @@ public class BotClient extends Client {
             ConsoleHelper.writeMessage(message);
 
 
-            if (!message.contains(": ")) {
+            if (!message.contains(":")) {
                 return;
             }
             String[] name = message.split(": ");
