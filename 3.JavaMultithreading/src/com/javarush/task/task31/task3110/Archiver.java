@@ -1,25 +1,36 @@
 package com.javarush.task.task31.task3110;
 
-import com.javarush.task.task31.task3110.command.ExitCommand;
+import com.javarush.task.task31.task3110.exception.WrongZipFileException;
 
-import java.nio.file.Paths;
-import java.util.Scanner;
+import java.io.IOException;
 
 public class Archiver {
     public static void main(String[] args) throws Exception {
-        Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Введите полный путь куда сохранять архив");
-        String pathTo = scanner.nextLine();
+        Operation operation = null;
+        
+        do {
 
-        ZipFileManager zipFileManager = new ZipFileManager(Paths.get(pathTo));
+            try {
+                operation = Archiver.askOperation();
+                CommandExecutor.execute(operation);
+            } catch (WrongZipFileException e){
+                ConsoleHelper.writeMessage("Вы не выбрали файл архива или выбрали неверный файл.");
+            } catch (Exception e){
+                ConsoleHelper.writeMessage("Произошла ошибка. Проверьте введенные данные.");
+            }
+        } while (operation != Operation.EXIT);
+    }
 
-        System.out.println("Введите путь к файлу, который будем архивировать");
-        String pathFrom = scanner.nextLine();
+    public static Operation askOperation() throws IOException {
+        ConsoleHelper.writeMessage("Выберите операцию:\n" +
+                Operation.CREATE.ordinal() + " - упаковать файлы в архив\n" +
+                Operation.ADD.ordinal() + " - добавить файл в архив\n" +
+                Operation.REMOVE.ordinal() + " - удалить файл из архива\n" +
+                Operation.EXTRACT.ordinal() + " - распаковать архив\n" +
+                Operation.CONTENT.ordinal() + " - просмотреть содержимое архива\n" +
+                Operation.EXIT.ordinal() + " - выход");
 
-        zipFileManager.createZip(Paths.get(pathFrom));
-
-        ExitCommand exitCommand = new ExitCommand();
-        exitCommand.execute();
+        return Operation.values()[ConsoleHelper.readInt()];
     }
 }
