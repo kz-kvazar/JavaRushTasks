@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.ZipEntry;
@@ -65,8 +66,9 @@ public class ZipFileManager {
 
             ZipEntry zipEntry = in.getNextEntry();
             while (zipEntry != null) {
-                String fileName = zipEntry.getName();
+                Path fileName = Paths.get(zipEntry.getName());
                 Path fileFullName = outputFolder.resolve(fileName);
+
 
                 Path parent = fileFullName.getParent();
                 if (Files.notExists(parent)) {
