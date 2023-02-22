@@ -25,6 +25,9 @@ public class Solution {
 
         thread.start();
         thread2.start();
+
+        Thread thread1 = new Thread(new EmulatorThreadFactoryTask());
+        thread1.start();
     }
 
     private static void emulateThreadFactory() {
