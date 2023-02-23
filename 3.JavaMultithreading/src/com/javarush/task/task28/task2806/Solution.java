@@ -13,12 +13,7 @@ public class Solution {
         ExecutorService service = Executors.newFixedThreadPool(5);
         for (int i = 1; i <= 10; i++) {
             int finalI = i;
-            service.submit(new Runnable() {
-                @Override
-                public void run() {
-                    doExpensiveOperation(finalI);
-                }
-            });
+            service.submit(() -> doExpensiveOperation(finalI));
         
         }
         service.shutdown();
