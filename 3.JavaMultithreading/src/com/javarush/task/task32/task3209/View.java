@@ -39,8 +39,8 @@ public class View extends JFrame implements ActionListener {
         FrameListener frameListener = new FrameListener(this);
         addWindowListener(frameListener);
         setVisible(true);
-
     }
+
     public void initMenuBar(){
         JMenuBar menuBar = new JMenuBar();
         MenuHelper.initFileMenu(this,menuBar);
