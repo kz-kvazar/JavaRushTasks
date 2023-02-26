@@ -38,6 +38,7 @@ public class View extends JFrame implements ActionListener {
     }
     public void initEditor(){
         htmlTextPane.setContentType("text/html");
+
         JScrollPane scrollPane = new JScrollPane(htmlTextPane);
         tabbedPane.addTab("HTML", scrollPane);
 
@@ -45,8 +46,7 @@ public class View extends JFrame implements ActionListener {
         tabbedPane.addTab("Текст",scrollPane1);
 
         tabbedPane.setPreferredSize(new Dimension(500,500));
-        TabbedPaneChangeListener paneChangeListener = new TabbedPaneChangeListener(this);
-        tabbedPane.addChangeListener(paneChangeListener);
+        tabbedPane.addChangeListener(new TabbedPaneChangeListener(this));
 
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
