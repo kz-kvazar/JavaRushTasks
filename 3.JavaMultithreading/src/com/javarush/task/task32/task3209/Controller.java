@@ -13,6 +13,21 @@ public class Controller {
     }
 
     public static void main(String[] args) {
+        View view1 = new View();
+        Controller controller= new Controller(view1);
+
+        view1.setController(controller);
+        view1.init();
+
+        controller.init();
 
     }
+
+    public void init(){
+
+    }
+    public void exit(){
+        System.exit(0);
+    }
+
 }
