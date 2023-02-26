@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 
 public class View extends JFrame implements ActionListener {
     private Controller controller;
-
     private JTabbedPane tabbedPane = new JTabbedPane();
     private JTextPane htmlTextPane = new JTextPane();
     private JEditorPane plainTextPane = new JEditorPane();
@@ -45,6 +44,7 @@ public class View extends JFrame implements ActionListener {
         pack();
     }
 
+    public void selectedTabChanged(){}
     public void exit(){
         controller.exit();
     }
