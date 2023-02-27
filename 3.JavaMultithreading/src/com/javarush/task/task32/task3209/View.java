@@ -58,13 +58,11 @@ public class View extends JFrame implements ActionListener {
                 break;
             case "Сохранить как...":
                 controller.saveDocumentAs();
-                break;
             case "Выход":
                 controller.exit();
                 break;
             case "О программе":
                 showAbout();
-                break;
         }
     }
 

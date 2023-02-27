@@ -43,7 +43,7 @@ public class Controller {
     }
 
     public void init(){
-
+        createNewDocument();
     }
     public void exit(){
         System.exit(0);
@@ -66,7 +66,12 @@ public class Controller {
         }
         return stringWriter.toString();
     }
-    public void createNewDocument(){}
+    public void createNewDocument(){
+        view.selectHtmlTab();
+        resetDocument();
+        view.setTitle("новый HTML файл");
+        currentFile = null;
+    }
 
     public void openDocument() {
     }
