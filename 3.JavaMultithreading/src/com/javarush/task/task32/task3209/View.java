@@ -17,6 +17,9 @@ public class View extends JFrame implements ActionListener {
     private JEditorPane plainTextPane = new JEditorPane();
     private UndoManager undoManager = new UndoManager();
     private UndoListener undoListener = new UndoListener(undoManager);
+    public boolean isHtmlTabSelected(){
+        return tabbedPane.getSelectedIndex() == 0;
+    }
 
     public View() throws HeadlessException {
         try {
