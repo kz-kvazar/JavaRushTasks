@@ -28,6 +28,10 @@ public class View extends JFrame implements ActionListener {
             ExceptionHandler.log(e);
         }
     }
+    public void selectHtmlTab(){
+        tabbedPane.setSelectedIndex(0);
+        resetUndo();
+    }
 
     public Controller getController() {
         return controller;
@@ -113,4 +117,10 @@ public class View extends JFrame implements ActionListener {
             ExceptionHandler.log(e);
         }
     }
+    public void update(){
+        htmlTextPane.setDocument(controller.getDocument());
+    }
+     public void showAbout(){
+         JOptionPane.showMessageDialog(null, "Программа версии 1.0", "Информация о программе", JOptionPane.INFORMATION_MESSAGE);
+     }
 }

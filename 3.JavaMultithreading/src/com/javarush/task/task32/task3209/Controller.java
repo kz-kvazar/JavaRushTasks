@@ -23,6 +23,10 @@ public class Controller {
 
     }
 
+    public HTMLDocument getDocument() {
+        return document;
+    }
+
     public void init(){
 
     }
