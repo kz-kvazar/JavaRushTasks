@@ -17,7 +17,8 @@ public class View extends JFrame implements ActionListener {
     private JEditorPane plainTextPane = new JEditorPane();
     private UndoManager undoManager = new UndoManager();
     private UndoListener undoListener = new UndoListener(undoManager);
-    public boolean isHtmlTabSelected(){
+
+    public boolean isHtmlTabSelected() {
         return tabbedPane.getSelectedIndex() == 0;
     }
 
@@ -28,7 +29,8 @@ public class View extends JFrame implements ActionListener {
             ExceptionHandler.log(e);
         }
     }
-    public void selectHtmlTab(){
+
+    public void selectHtmlTab() {
         tabbedPane.setSelectedIndex(0);
         resetUndo();
     }
@@ -43,63 +45,89 @@ public class View extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        String actionCommand = e.getActionCommand();
+        switch (actionCommand) {
+            case "Новый":
+                controller.createNewDocument();
+                break;
+            case "Открыть":
+                controller.openDocument();
+                break;
+            case "Сохранить":
+                controller.saveDocument();
+                break;
+            case "Сохранить как...":
+                controller.saveDocumentAs();
+                break;
+            case "Выход":
+                controller.exit();
+                break;
+            case "О программе":
+                showAbout();
+                break;
+        }
     }
 
-    public void init(){
+    public void init() {
         initGui();
         FrameListener frameListener = new FrameListener(this);
         addWindowListener(frameListener);
         setVisible(true);
 
     }
-    public void initMenuBar(){
+
+    public void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-        MenuHelper.initFileMenu(this,menuBar);
-        MenuHelper.initEditMenu(this,menuBar);
-        MenuHelper.initStyleMenu(this,menuBar);
-        MenuHelper.initAlignMenu(this,menuBar);
-        MenuHelper.initColorMenu(this,menuBar);
+        MenuHelper.initFileMenu(this, menuBar);
+        MenuHelper.initEditMenu(this, menuBar);
+        MenuHelper.initStyleMenu(this, menuBar);
+        MenuHelper.initAlignMenu(this, menuBar);
+        MenuHelper.initColorMenu(this, menuBar);
         MenuHelper.initFontMenu(this, menuBar);
-        MenuHelper.initHelpMenu(this,menuBar);
+        MenuHelper.initHelpMenu(this, menuBar);
 
         getContentPane().add(menuBar, BorderLayout.NORTH);
     }
-    public void initEditor(){
+
+    public void initEditor() {
         htmlTextPane.setContentType("text/html");
         JScrollPane scrollPane = new JScrollPane(htmlTextPane);
         tabbedPane.addTab("HTML", scrollPane);
 
         JScrollPane scrollPane1 = new JScrollPane(plainTextPane);
-        tabbedPane.addTab("Текст",scrollPane1);
+        tabbedPane.addTab("Текст", scrollPane1);
 
-        tabbedPane.setPreferredSize(new Dimension(500,500));
+        tabbedPane.setPreferredSize(new Dimension(500, 500));
         TabbedPaneChangeListener paneChangeListener = new TabbedPaneChangeListener(this);
         tabbedPane.addChangeListener(paneChangeListener);
 
         getContentPane().add(tabbedPane, BorderLayout.CENTER);
     }
-    public void initGui(){
+
+    public void initGui() {
         initMenuBar();
         initEditor();
         pack();
     }
 
-    public void selectedTabChanged(){
-        if (tabbedPane.getSelectedIndex() == 0){
+    public void selectedTabChanged() {
+        if (tabbedPane.getSelectedIndex() == 0) {
             controller.setPlainText(plainTextPane.getText());
-        }else if(tabbedPane.getSelectedIndex() == 1){
-           plainTextPane.setText(controller.getPlainText());
+        } else if (tabbedPane.getSelectedIndex() == 1) {
+            plainTextPane.setText(controller.getPlainText());
         }
         resetUndo();
     }
-    public void exit(){
+
+    public void exit() {
         controller.exit();
     }
 
     public UndoListener getUndoListener() {
         return undoListener;
     }
-    public void resetUndo(){
+
+    public void resetUndo() {
         undoManager.discardAllEdits();
     }
 
@@ -110,24 +138,28 @@ public class View extends JFrame implements ActionListener {
     public boolean canRedo() {
         return undoManager.canRedo();
     }
-    public void undo(){
+
+    public void undo() {
         try {
             undoManager.undo();
-        }catch (Exception e){
+        } catch (Exception e) {
             ExceptionHandler.log(e);
         }
     }
-    public void redo(){
+
+    public void redo() {
         try {
             undoManager.redo();
-        }catch (Exception e){
+        } catch (Exception e) {
             ExceptionHandler.log(e);
         }
     }
-    public void update(){
+
+    public void update() {
         htmlTextPane.setDocument(controller.getDocument());
     }
-     public void showAbout(){
-         JOptionPane.showMessageDialog(null, "Программа версии 1.0", "Информация о программе", JOptionPane.INFORMATION_MESSAGE);
-     }
+
+    public void showAbout() {
+        JOptionPane.showMessageDialog(null, "Программа версии 1.0", "Информация о программе", JOptionPane.INFORMATION_MESSAGE);
+    }
 }
