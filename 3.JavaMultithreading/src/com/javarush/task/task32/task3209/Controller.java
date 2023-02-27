@@ -2,9 +2,12 @@ package com.javarush.task.task32.task3209;
 
 import javax.swing.event.DocumentListener;
 import javax.swing.text.AbstractDocument;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.html.HTMLDocument;
 import javax.swing.text.html.HTMLEditorKit;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringReader;
 
 public class Controller {
     private View view;
@@ -44,5 +47,13 @@ public class Controller {
     public void exit(){
         System.exit(0);
     }
-
+    public void setPlainText(String text){
+        resetDocument();
+        StringReader stringReader = new StringReader(text);
+        try {
+            new HTMLEditorKit().read(stringReader,document,0);
+        } catch (Exception e) {
+            ExceptionHandler.log(e);
+        }
+    }
 }
