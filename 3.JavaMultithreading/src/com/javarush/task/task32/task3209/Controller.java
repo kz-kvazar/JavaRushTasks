@@ -72,8 +72,7 @@ public class Controller {
     public void createNewDocument() {
         view.selectHtmlTab();
         resetDocument();
-        view.setTitle("HTML редактор");
-        view.resetUndo();
+        view.setTitle("новый HTML файл");
         currentFile = null;
     }
 
