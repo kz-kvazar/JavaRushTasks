@@ -19,7 +19,7 @@ public class Tablet extends Observable {
         return "Tablet{number=" + number+ "}";
     }
 
-    public Order createOrder(){
+    public void createOrder(){
         Order order = null;
         try {
             order = new Order(this);
@@ -29,6 +29,6 @@ public class Tablet extends Observable {
         }catch (IOException e){
             logger.log(Level.SEVERE,"Console is unavailable.");
         }
-        return order;
+        //return order;
     }
 }
