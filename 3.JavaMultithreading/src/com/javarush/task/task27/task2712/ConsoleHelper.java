@@ -29,7 +29,6 @@ public class ConsoleHelper {
             order = readString();
             if (!order.equals("exit")) {
                 try {
-
                     Dish dish = Dish.valueOf(order);
                     dishList.add(dish);
                 } catch (IllegalArgumentException e) {
@@ -37,7 +36,7 @@ public class ConsoleHelper {
                 }
             }
         }
-        ConsoleHelper.writeMessage("Ожидайте вашего заказа");
+        //ConsoleHelper.writeMessage("Ожидайте вашего заказа");
         return dishList;
     }
 }
