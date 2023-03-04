@@ -8,6 +8,12 @@ public class Advertisement {
     private int duration;
     private long amountPerOneDisplaying;
 
+    public void revalidate(){
+        if (hits <= 0) {
+            throw new UnsupportedOperationException();
+        }
+        hits--;
+    }
     public String getName() {
         return name;
     }
