@@ -20,6 +20,15 @@ public enum Dish {
     }
 
     public static String allDishesToString() {
-        return Arrays.toString(Dish.values());
+        String result = "";
+
+        for (Dish dish : Dish.values()) {
+            if ("".equals(result)) {
+                result += dish.name();
+            } else {
+                result += ", " + dish.name();
+            }
+        }
+        return result;
     }
 }
