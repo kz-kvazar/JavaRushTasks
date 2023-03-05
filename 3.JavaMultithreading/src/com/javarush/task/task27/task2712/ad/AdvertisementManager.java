@@ -18,27 +18,27 @@ public class AdvertisementManager {
         displayAdvertisement();
     }
 
+    //recursion
     private long maxAmount;
     private List<Advertisement> optimalVideoSet;
     private int totalTimeSecondsLeft;
 
     private void obtainOptimalVideoSet(Set<Advertisement> totalSet, int currentTimeSecondsLeft, long currentAmount) {
-        if (currentTimeSecondsLeft < 0) {
-            return;
-        } else if (currentAmount > maxAmount
+        if (currentAmount > maxAmount
                 || currentAmount == maxAmount && (totalTimeSecondsLeft > currentTimeSecondsLeft
                 || totalTimeSecondsLeft == currentTimeSecondsLeft && totalSet.size() < optimalVideoSet.size())) {
             this.totalTimeSecondsLeft = currentTimeSecondsLeft;
             this.optimalVideoSet = new ArrayList<>(totalSet);
             this.maxAmount = currentAmount;
-            if (currentTimeSecondsLeft == 0) {
-                return;
-            }
+        }
+
+        if (currentTimeSecondsLeft == 0) {
+            return;
         }
 
         List<Advertisement> actualAdvertisements = getActualAdvertisements();
         for (Advertisement ad : actualAdvertisements) {
-            if (!ad.isActive() || totalSet.contains(ad)) {
+            if (!ad.isActive() || totalSet.contains(ad) || ad.getDuration() > currentTimeSecondsLeft) {
                 continue;
             }
             Set<Advertisement> currentSet = new HashSet<>(totalSet);
@@ -58,10 +58,8 @@ public class AdvertisementManager {
             throw new NoVideoAvailableException();
         }
 
-        optimalVideoSet.sort((o1, o2) -> {
-            long l = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
-            return (int) (l != 0 ? l : o2.getDuration() - o1.getDuration());
-        });
+        optimalVideoSet.sort(Comparator.comparing(Advertisement::getAmountPerOneDisplaying).reversed()
+                .thenComparing(Advertisement::getDuration));
 
         StringBuilder builder = new StringBuilder();
         for (Advertisement ad : optimalVideoSet) {
