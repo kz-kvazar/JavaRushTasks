@@ -14,6 +14,19 @@ public class Advertisement {
         }
         hits--;
     }
+
+    public Object getContent() {
+        return content;
+    }
+
+    public long getInitialAmount() {
+        return initialAmount;
+    }
+
+    public boolean isActive() {
+        return hits > 0;
+    }
+
     public String getName() {
         return name;
     }
