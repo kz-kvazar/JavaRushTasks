@@ -3,13 +3,10 @@ package com.javarush.task.task27.task2712.ad;
 import com.javarush.task.task27.task2712.statistic.StatisticManager;
 import com.javarush.task.task27.task2712.statistic.event.VideoSelectedEventDataRow;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class AdvertisementManager {
-    
     private final AdvertisementStorage storage = AdvertisementStorage.getInstance();
     private int timeSeconds;
 
@@ -19,7 +16,7 @@ public class AdvertisementManager {
 
     public void processVideos() {
         this.totalTimeSecondsLeft = Integer.MAX_VALUE;
-        obtainOptimalVideoSet(new ArrayList<Advertisement>(), timeSeconds, 0l);
+        obtainOptimalVideoSet(new HashSet<>(), timeSeconds, 0L);
 
         VideoSelectedEventDataRow row = new VideoSelectedEventDataRow(optimalVideoSet, maxAmount, timeSeconds - totalTimeSecondsLeft);
         StatisticManager.getInstance().register(row);
@@ -27,68 +24,64 @@ public class AdvertisementManager {
         displayAdvertisement();
     }
 
-    //recursy
+
+    //recursion
     private long maxAmount;
     private List<Advertisement> optimalVideoSet;
     private int totalTimeSecondsLeft;
 
-    private void obtainOptimalVideoSet(List<Advertisement> totalList, int currentTimeSecondsLeft, long currentAmount) {
-        if (currentTimeSecondsLeft < 0) {
-            return;
-        } else if (currentAmount > maxAmount
+    private void obtainOptimalVideoSet(Set<Advertisement> totalSet, int currentTimeSecondsLeft, long currentAmount) {
+        if (currentAmount > maxAmount
                 || currentAmount == maxAmount && (totalTimeSecondsLeft > currentTimeSecondsLeft
-                || totalTimeSecondsLeft == currentTimeSecondsLeft && totalList.size() < optimalVideoSet.size())) {
+                || totalTimeSecondsLeft == currentTimeSecondsLeft && totalSet.size() < optimalVideoSet.size())) {
             this.totalTimeSecondsLeft = currentTimeSecondsLeft;
-            this.optimalVideoSet = totalList;
+            this.optimalVideoSet = new ArrayList<>(totalSet);
             this.maxAmount = currentAmount;
-            if (currentTimeSecondsLeft == 0) {
-                return;
-            }
         }
 
-        ArrayList<Advertisement> tmp = getActualAdvertisements();
-        tmp.removeAll(totalList);
-        for (Advertisement ad : tmp) {
-            if (!ad.isActive()) continue;
-            ArrayList<Advertisement> currentList = new ArrayList<>(totalList);
-            currentList.add(ad);
-            obtainOptimalVideoSet(currentList, currentTimeSecondsLeft - ad.getDuration(), currentAmount + ad.getAmountPerOneDisplaying());
+        if (currentTimeSecondsLeft == 0) {
+            return;
+        }
+
+        List<Advertisement> actualAdvertisements = getActualAdvertisements();
+        for (Advertisement ad : actualAdvertisements) {
+            if (!ad.isActive() || totalSet.contains(ad) || ad.getDuration() > currentTimeSecondsLeft) {
+                continue;
+            }
+            Set<Advertisement> currentSet = new HashSet<>(totalSet);
+            currentSet.add(ad);
+            obtainOptimalVideoSet(currentSet, currentTimeSecondsLeft - ad.getDuration(), currentAmount + ad.getAmountPerOneDisplaying());
         }
     }
 
-    private ArrayList<Advertisement> getActualAdvertisements() {
-        ArrayList<Advertisement> advertisements = new ArrayList<>();
-        for (Advertisement ad : storage.list()) {
-            if (ad.isActive()) {
-                advertisements.add(ad);
-            }
-        }
-        return advertisements;
+    private List<Advertisement> getActualAdvertisements() {
+        return storage.list().stream()
+                .filter(Advertisement::isActive)
+                .collect(Collectors.toList());
     }
 
     private void displayAdvertisement() {
-        //TODO displaying
         if (optimalVideoSet == null || optimalVideoSet.isEmpty()) {
+            //StatisticManager.getInstance().register(new NoAvailableVideoEventDataRow(totalTimeSecondsLeft));
             throw new NoVideoAvailableException();
         }
 
-        Collections.sort(optimalVideoSet, new Comparator<Advertisement>() {
-            @Override
-            public int compare(Advertisement o1, Advertisement o2) {
-                long l = o2.getAmountPerOneDisplaying() - o1.getAmountPerOneDisplaying();
-                return (int) (l != 0 ? l : o2.getDuration() - o1.getDuration());
-            }
-        });
+        optimalVideoSet.sort(Comparator.comparing(Advertisement::getAmountPerOneDisplaying).reversed()
+                .thenComparing(Advertisement::getDuration));
 
+
+
+        StringBuilder builder = new StringBuilder();
         for (Advertisement ad : optimalVideoSet) {
-            displayInPlayer(ad);
+            builder.append(ad.getName())
+                    .append(" is displaying... ")
+                    .append(ad.getAmountPerOneDisplaying())
+                    .append(", ")
+                    .append(1000 * ad.getAmountPerOneDisplaying() / ad.getDuration())
+                    .append("\n");
             ad.revalidate();
         }
+        System.out.println(builder.toString());
     }
 
-    private void displayInPlayer(Advertisement advertisement) {
-        //TODO get Player instance and display content
-        System.out.println(advertisement.getName() + " is displaying... " + advertisement.getAmountPerOneDisplaying() +
-                ", " + (1000 * advertisement.getAmountPerOneDisplaying() / advertisement.getDuration()));
-    }
 }
