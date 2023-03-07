@@ -84,4 +84,19 @@ public class AdvertisementManager {
         System.out.println(builder.toString());
     }
 
+    public static class StatisticAdvertisementManager {
+        private static class InstanceHolder {
+            static StatisticAdvertisementManager advertisementManager = new StatisticAdvertisementManager();
+        }
+
+        public static StatisticAdvertisementManager getInstance() {
+            return InstanceHolder.advertisementManager;
+        }
+
+        AdvertisementStorage storage = AdvertisementStorage.getInstance();
+
+        public void getActiveAdvertisements(){
+            storage.list();
+        }
+    }
 }

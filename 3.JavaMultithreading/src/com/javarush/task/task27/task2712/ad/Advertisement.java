@@ -9,6 +9,10 @@ public class Advertisement {
     //начальная сумма, стоимость рекламы в копейках. Используем long, чтобы избежать проблем с округлением
     private long initialAmount;
 
+    public int getHits() {
+        return hits;
+    }
+
     //количество оплаченных показов
     private int hits;
 
