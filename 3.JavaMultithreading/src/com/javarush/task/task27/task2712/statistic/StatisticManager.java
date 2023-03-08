@@ -47,6 +47,11 @@ public class StatisticManager {
     public void register(EventDataRow data) {
         this.statisticStorage.put(data);
     }
+
+    public Set<Cook> getCooks() {
+        return cooks;
+    }
+
     public void register(Cook cook){
         this.cooks.add(cook);
     }
