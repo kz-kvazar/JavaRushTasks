@@ -4,25 +4,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RandomOrderGeneratorTask implements Runnable {
-    private List<Tablet> tabletList;
-    private int ORDER_CREATING_INTERVAL;
+    private List<Tablet> tablets;
+    private int interval;
 
-    public RandomOrderGeneratorTask(List<Tablet> tabletList, int ORDER_CREATING_INTERVAL) {
-        this.ORDER_CREATING_INTERVAL = ORDER_CREATING_INTERVAL;
-        this.tabletList = tabletList;
+    public RandomOrderGeneratorTask(List<Tablet> tablets, int interval) {
+        this.tablets = tablets;
+        this.interval = interval;
     }
 
     @Override
     public void run() {
-        
-        while (true) {
-            try {
-                int randomInt = (int) (Math.random() * tabletList.size());
-                Tablet randomTablet = tabletList.get(randomInt);
-                randomTablet.createTestOrder();
-                Thread.sleep(ORDER_CREATING_INTERVAL);
-            } catch (Exception e) {
+        try {
+            while (true) {
+                int k = (int) (Math.random() * tablets.size());
+                Tablet expected = tablets.get(k);
+                expected.createTestOrder();
+                Thread.sleep(interval);
             }
+        } catch (Exception e) {
         }
     }
 }
