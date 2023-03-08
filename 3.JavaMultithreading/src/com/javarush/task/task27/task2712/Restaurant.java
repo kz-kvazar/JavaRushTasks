@@ -37,7 +37,7 @@ public class Restaurant {
         cook11.start();
         Thread cook22 = new Thread(cook2);
         cook22.start();
-
+        
         Thread threadGenerator = new Thread(new RandomOrderGeneratorTask(tabletList, ORDER_CREATING_INTERVAL));
         threadGenerator.setDaemon(true);
         threadGenerator.start();
