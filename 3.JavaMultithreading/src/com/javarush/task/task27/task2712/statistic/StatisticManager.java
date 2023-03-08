@@ -17,7 +17,7 @@ public class StatisticManager {
     }
 
     private StatisticStorage statisticStorage = new StatisticStorage();
-    private Set<Cook> cooks = new HashSet<>();
+    //private Set<Cook> cooks = new HashSet<>();
 
     private StatisticManager() {
     }
@@ -48,13 +48,13 @@ public class StatisticManager {
         this.statisticStorage.put(data);
     }
 
-    public Set<Cook> getCooks() {
-        return cooks;
-    }
-
-    public void register(Cook cook){
-        this.cooks.add(cook);
-    }
+//    public Set<Cook> getCooks() {
+//        return cooks;
+//    }
+//
+//    public void register(Cook cook){
+//        this.cooks.add(cook);
+//    }
     public Map<String,Long> calculateDailyAdRevenue(){
         List<EventDataRow> eventDataRows = statisticStorage.getStorage().get(EventType.SELECTED_VIDEOS);
         SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy", Locale.ENGLISH);
