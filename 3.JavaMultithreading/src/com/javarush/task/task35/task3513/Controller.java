@@ -50,4 +50,8 @@ public class Controller extends KeyAdapter {
         view.isGameLost = false;
         model.resetGameTiles();
     }
+
+    public View getView() {
+        return view;
+    }
 }
