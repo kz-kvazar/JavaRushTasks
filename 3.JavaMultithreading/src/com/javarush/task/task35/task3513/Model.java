@@ -3,13 +3,17 @@ package com.javarush.task.task35.task3513;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Stack;
 
 public class Model {
     private Tile[][] gameTiles;
     private static final int FIELD_WIDTH = 4;
     int maxTile = 2;
     int score = 0;
-
+    private boolean isSaveNeeded = true;
+    private Stack<Tile[][]> previousStates = new Stack<>();
+    private Stack<Integer> previousScores = new Stack<>();
+    
     public Tile[][] getGameTiles() {
         return gameTiles;
     }
@@ -48,15 +52,16 @@ public class Model {
         }
         return list;
     }
-    private boolean compressTiles(Tile[] tiles){
+
+    private boolean compressTiles(Tile[] tiles) {
         boolean hasChanged = false;
         int insertPosition = 0;
         for (int i = 0; i < FIELD_WIDTH; i++) {
-            if (!tiles[i].isEmpty()){
-                if(i != insertPosition) {
+            if (!tiles[i].isEmpty()) {
+                if (i != insertPosition) {
                     tiles[insertPosition] = tiles[i];
                     tiles[i] = new Tile();
-                    hasChanged =true;
+                    hasChanged = true;
                 }
                 insertPosition++;
             }
@@ -163,5 +168,22 @@ public class Model {
             }
         }
         return false;
+    }
+
+    private void saveState(Tile[][] tiles) {
+        Tile [][] gameTilesToSave = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for (int i = 0; i < FIELD_WIDTH; i++) {
+            System.arraycopy(gameTiles[i], 0, gameTilesToSave[i], 0, FIELD_WIDTH);
+        }
+        previousStates.push(gameTilesToSave);
+        previousScores.push(score);
+        isSaveNeeded = false;
+    }
+
+    public void rollback() {
+        if (!previousScores.isEmpty() & !previousStates.isEmpty()) {
+            gameTiles = previousStates.pop();
+            score = previousScores.pop();
+        }
     }
 }
