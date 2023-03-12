@@ -7,7 +7,7 @@ import java.util.List;
 public class Model {
     private Tile[][] gameTiles;
     private static final int FIELD_WIDTH = 4;
-    int maxTile = 0;
+    int maxTile = 2;
     int score = 0;
 
     public Model() {
@@ -89,6 +89,17 @@ public class Model {
         return hasChanged;
     }
 
+    private Tile[][] rotateClockwise(Tile[][] tiles) {
+        final int N = tiles.length;
+        Tile[][] result = new Tile[N][N];
+        for (int r = 0; r < N; r++) {
+            for (int c = 0; c < N; c++) {
+                result[c][N - 1 - r] = tiles[r][c];
+            }
+        }
+        return result;
+    }
+
     public void left() {
         boolean moveFlag = false;
         for (int i = 0; i < FIELD_WIDTH; i++) {
@@ -99,5 +110,29 @@ public class Model {
         if (moveFlag) {
             addTile();
         }
+    }
+
+    public void right() {
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        left();
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+    }
+
+    public void up() {
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        left();
+        gameTiles = rotateClockwise(gameTiles);
+    }
+
+    public void down() {
+        gameTiles = rotateClockwise(gameTiles);
+        left();
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
+        gameTiles = rotateClockwise(gameTiles);
     }
 }
