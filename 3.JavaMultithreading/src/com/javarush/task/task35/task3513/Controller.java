@@ -15,8 +15,10 @@ public class Controller extends KeyAdapter {
             resetGame();
         } else if (!model.canMove()) {
             view.isGameLost = true;
-        }if (!view.isGameLost && !view.isGameWon){
-            if ( keyCode == KeyEvent.VK_LEFT){
+        }
+        
+        if (!view.isGameLost && !view.isGameWon) {
+            if (keyCode == KeyEvent.VK_LEFT) {
                 model.left();
             } else if (keyCode == KeyEvent.VK_RIGHT) {
                 model.right();
@@ -24,11 +26,14 @@ public class Controller extends KeyAdapter {
                 model.up();
             } else if (keyCode == KeyEvent.VK_DOWN) {
                 model.down();
+            } else if (keyCode == KeyEvent.VK_Z) {
+                model.rollback();
             }
         }
         if (model.maxTile == WINNING_TILE){
             view.isGameWon = true;
         }
+
         view.repaint();
     }
 
