@@ -28,6 +28,8 @@ public class Controller extends KeyAdapter {
                 model.down();
             } else if (keyCode == KeyEvent.VK_Z) {
                 model.rollback();
+            } else if (keyCode == KeyEvent.VK_R) {
+                model.randomMove();
             }
         }
         if (model.maxTile == WINNING_TILE){
