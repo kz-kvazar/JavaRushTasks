@@ -29,6 +29,8 @@ public class Solution {
         // implement this method
         //String fileName = urlString.substring(urlString.lastIndexOf('/') + 1);
         String fileName = Paths.get(urlString).getFileName().toString();
+        fileName = fileName.split("\\?")[0];
+
         URL url = new URL(urlString);
         downloadDirectory = downloadDirectory.resolve(fileName);
 
