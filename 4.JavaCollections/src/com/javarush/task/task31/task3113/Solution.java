@@ -13,6 +13,7 @@ import java.util.concurrent.atomic.AtomicLong;
 */
 
 public class Solution {
+
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         String dirName = reader.readLine();
@@ -37,6 +38,7 @@ public class Solution {
                 public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
                     fileCounter.incrementAndGet();
                     sizeCounter.addAndGet(attrs.size());
+                    //file.toFile().length();
                     return FileVisitResult.CONTINUE;
                 }
             });
