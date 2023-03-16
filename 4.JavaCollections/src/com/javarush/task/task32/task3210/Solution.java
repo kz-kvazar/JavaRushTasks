@@ -26,13 +26,12 @@ public class Solution {
             raf.seek(raf.length());
             if (readeText.equals(text)){
                 
-                raf.write("true".getBytes());
+                raf.write("true".getBytes(StandardCharsets.UTF_8));
             } else {
                 raf.write("false".getBytes());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
     }
 }
