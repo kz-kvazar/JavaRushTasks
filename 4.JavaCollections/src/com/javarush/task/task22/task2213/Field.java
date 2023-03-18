@@ -22,4 +22,10 @@ public class Field {
     public int[][] getMatrix() {
         return matrix;
     }
+    public void print(){}
+    public void removeFullLines(){}
+    public Integer getValue(int x, int y){
+        return null;
+    }
+    public void setValue(int x, int y, int value){}
 }
