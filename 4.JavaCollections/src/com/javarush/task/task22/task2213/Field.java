@@ -1,17 +1,14 @@
 package com.javarush.task.task22.task2213;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Класс Field описывает "поле клеток" игры Тетрис
  */
 public class Field {
     //ширина и высота
-    private final int width;
-    private final int height;
+    private int width;
+    private int height;
 
     //матрица поля: 1 - клетка занята, 0 - свободна
     private int[][] matrix;
@@ -62,7 +59,9 @@ public class Field {
 
         //Копируем "матрицу поля" в массив
         for (int i = 0; i < height; i++) {
-            System.arraycopy(matrix[i], 0, canvas[i], 0, width);
+            for (int j = 0; j < width; j++) {
+                canvas[i][j] = matrix[i][j];
+            }
         }
 
         //Копируем фигурку в массив, только непустые клетки
@@ -102,19 +101,32 @@ public class Field {
         System.out.println();
     }
 
-    void removeFullLines() {
-        List<int[]> lines = new ArrayList<>();
-        for (int[] row : matrix) {
-            for (int cell : row) {
-                if (cell == 0) {
-                    lines.add(row);
-                    break;
-                }
+    /**
+     * Удаляем заполненные линии
+     */
+    public void removeFullLines() {
+        //Создаем список для хранения линий
+        ArrayList<int[]> lines = new ArrayList<int[]>();
+
+        //Копируем все неполные линии в список.
+        for (int i = 0; i < height; i++) {
+            //подсчитываем количество единиц в строке - просто суммируем все ее значения
+            int count = 0;
+            for (int j = 0; j < width; j++) {
+                count += matrix[i][j];
             }
+
+            //Если сумма строки не равна ее ширине - добавляем в список
+            if (count != width)
+                lines.add(matrix[i]);
         }
+
+        //Добавляем недостающие строки в начало списка.
         while (lines.size() < height) {
             lines.add(0, new int[width]);
         }
+
+        //Преобразуем список обратно в матрицу
         matrix = lines.toArray(new int[height][width]);
     }
 }
