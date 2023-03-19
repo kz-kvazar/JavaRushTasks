@@ -60,7 +60,7 @@ public class Tetris {
                 else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
                     figure.right();
                     //Если  код клавиши равен 12 ("цифра 5 на доп. клавиатуре") - повернуть фигурку
-                else if (event.getKeyCode() == 12)
+                else if (event.getKeyCode() == KeyEvent.VK_SHIFT)
                     figure.rotate();
                     //Если "пробел" - фигурка падает вниз на максимум
                 else if (event.getKeyCode() == KeyEvent.VK_SPACE)
@@ -77,7 +77,7 @@ public class Tetris {
     }
 
     public void step() {
-        //опускам фигурку вниз
+        //опускаем фигурку вниз
         figure.down();
 
         //если разместить фигурку на текущем месте невозможно
