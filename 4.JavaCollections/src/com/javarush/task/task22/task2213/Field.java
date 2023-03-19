@@ -105,15 +105,11 @@ public class Field {
     void removeFullLines() {
         List<int[]> lines = new ArrayList<>();
         for (int[] row : matrix) {
-            boolean isFull = true;
             for (int cell : row) {
                 if (cell == 0) {
-                    isFull = false;
+                    lines.add(row);
                     break;
                 }
-            }
-            if (!isFull) {
-                lines.add(row);
             }
         }
         while (lines.size() < height) {
