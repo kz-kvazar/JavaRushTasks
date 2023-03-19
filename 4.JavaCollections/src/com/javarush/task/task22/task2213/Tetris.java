@@ -7,14 +7,19 @@ import java.awt.event.KeyEvent;
  */
 public class Tetris {
 
+    public static Tetris game;
     private Field field;                //Поле с клетками
     private Figure figure;              //Фигурка
-
     private boolean isGameOver;         //Игра Окончена?
 
     public Tetris(int width, int height) {
         field = new Field(width, height);
         figure = null;
+    }
+
+    public static void main(String[] args) throws Exception {
+        game = new Tetris(10, 20);
+        game.run();
     }
 
     /**
@@ -25,10 +30,24 @@ public class Tetris {
     }
 
     /**
+     * Сеттер для field
+     */
+    public void setField(Field field) {
+        this.field = field;
+    }
+
+    /**
      * Геттер переменной figure.
      */
     public Figure getFigure() {
         return figure;
+    }
+
+    /**
+     * Сеттер для figure
+     */
+    public void setFigure(Figure figure) {
+        this.figure = figure;
     }
 
     /**
@@ -54,17 +73,13 @@ public class Tetris {
                 //Если равно символу 'q' - выйти из игры.
                 if (event.getKeyChar() == 'q') return;
                 //Если "стрелка влево" - сдвинуть фигурку влево
-                if (event.getKeyCode() == KeyEvent.VK_LEFT)
-                    figure.left();
+                if (event.getKeyCode() == KeyEvent.VK_LEFT) figure.left();
                     //Если "стрелка вправо" - сдвинуть фигурку вправо
-                else if (event.getKeyCode() == KeyEvent.VK_RIGHT)
-                    figure.right();
+                else if (event.getKeyCode() == KeyEvent.VK_RIGHT) figure.right();
                     //Если  код клавиши равен 12 ("цифра 5 на доп. клавиатуре") - повернуть фигурку
-                else if (event.getKeyCode() == KeyEvent.VK_SHIFT)
-                    figure.rotate();
+                else if (event.getKeyCode() == KeyEvent.VK_SHIFT) figure.rotate();
                     //Если "пробел" - фигурка падает вниз на максимум
-                else if (event.getKeyCode() == KeyEvent.VK_SPACE)
-                    figure.downMaximum();
+                else if (event.getKeyCode() == KeyEvent.VK_SPACE) figure.downMaximum();
             }
 
             step();             //делаем очередной шаг
@@ -91,26 +106,5 @@ public class Tetris {
 
             figure = FigureFactory.createRandomFigure(field.getWidth() / 2, 0); //создаем новую фигурку
         }
-    }
-
-    /**
-     * Сеттер для figure
-     */
-    public void setFigure(Figure figure) {
-        this.figure = figure;
-    }
-
-    /**
-     * Сеттер для field
-     */
-    public void setField(Field field) {
-        this.field = field;
-    }
-
-    public static Tetris game;
-
-    public static void main(String[] args) throws Exception {
-        game = new Tetris(10, 20);
-        game.run();
     }
 }
