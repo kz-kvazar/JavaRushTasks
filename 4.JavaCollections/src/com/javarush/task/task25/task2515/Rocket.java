@@ -4,7 +4,6 @@ public class Rocket extends BaseObject{
     public Rocket(double x, double y) {
         super(x, y, 1);
     }
-
     /**
      * Отрисовываем себя на холсте.
      */
@@ -21,4 +20,3 @@ public class Rocket extends BaseObject{
         y--;
     }
 }
-
