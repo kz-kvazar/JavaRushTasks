@@ -44,7 +44,9 @@ public class Space {
         return bombs;
     }
     public void run(){}
-    public void draw(){}
+    public void draw(){
+
+    }
     public void sleep(int ms){}
     public static Space game;
 
