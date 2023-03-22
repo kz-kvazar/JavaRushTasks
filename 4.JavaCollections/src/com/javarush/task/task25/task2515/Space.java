@@ -2,6 +2,7 @@ package com.javarush.task.task25.task2515;
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -108,6 +109,10 @@ public class Space {
      */
     public void createUfo() {
         //тут нужно создать новый НЛО.
+        if (getUfos().isEmpty()){
+            Ufo ufo = new Ufo(game.width/2,0);
+            ufos.add(ufo);
+        }
     }
 
     /**
@@ -117,6 +122,14 @@ public class Space {
      */
     public void checkBombs() {
         //тут нужно проверить все возможные столкновения для каждой бомбы.
+        for (Bomb b: getBombs()) {
+            if (b.isIntersect(ship)){
+                b.die();
+                ship.die();
+            } else if (b.y >= height){
+                b.die();
+            }
+        }
     }
 
     /**
@@ -126,13 +139,26 @@ public class Space {
      */
     public void checkRockets() {
         //тут нужно проверить все возможные столкновения для каждой ракеты.
+        for (Rocket r : getRockets()) {
+            for (Ufo u : getUfos()) {
+                if (r.isIntersect(u)){
+                    r.die();
+                    u.die();
+                }
+            }
+            if (r.y < 0){
+                r.die();
+            }
+        }
     }
 
     /**
      * Удаляем умершие объекты (бомбы, ракеты, НЛО) из списков
      */
     public void removeDead() {
-        //тут нужно удалить все умершие объекты из списков (кроме космического корабля)
+        ufos.removeIf(ufo -> !ufo.isAlive());
+        bombs.removeIf(bomb -> !bomb.isAlive());
+        rockets.removeIf(rocket -> !rocket.isAlive());
     }
 
     /**
