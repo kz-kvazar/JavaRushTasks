@@ -5,10 +5,10 @@ import java.util.*;
 
 public class AmigoSet<E> extends AbstractSet<E> implements  Set<E>, Serializable, Cloneable {
 private static final Object PRESENT = new Object();
-private transient HashMap<E,Object> map;
+private transient HashMap<E, Object> map;
 
     public AmigoSet() {
-        map = new HashMap<>();
+        this.map = new HashMap<>();
     }
 
     public AmigoSet(Collection<? extends E> collection) {
@@ -23,7 +23,7 @@ private transient HashMap<E,Object> map;
 
     @Override
     public Iterator<E> iterator() {
-        return  map.keySet().iterator();
+        return map.keySet().iterator();
     }
 
     @Override
