@@ -27,10 +27,10 @@ public class Solution<T> {
 
     public static <K, V> HashMap<K, V> newHashMap(List<? extends K> keys, List<? extends V> values) {
         //напишите тут ваш код
-        HashMap<K, V> map = new HashMap<>();
         if (keys.size() != values.size()){
             throw new IllegalArgumentException();
         }
+        HashMap<K, V> map = new HashMap<>();
         for (int i = 0; i < keys.size(); i++) {
             map.put(keys.get(i), values.get(i));
         }
