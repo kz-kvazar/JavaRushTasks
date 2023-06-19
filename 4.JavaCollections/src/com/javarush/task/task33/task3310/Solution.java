@@ -1,19 +1,27 @@
 package com.javarush.task.task33.task3310;
 
+import com.javarush.task.task33.task3310.strategy.FileStorageStrategy;
 import com.javarush.task.task33.task3310.strategy.HashMapStorageStrategy;
+import com.javarush.task.task33.task3310.strategy.OurHashMapStorageStrategy;
 import com.javarush.task.task33.task3310.strategy.StorageStrategy;
 
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.*;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Solution {
-    public static void main(String[] args) {
-        HashMapStorageStrategy strategy = new HashMapStorageStrategy();
-        testStrategy(strategy,10000);
+    public static void main(String[] args) throws IOException {
+        long elementsNumber = 10000;
+
+        testStrategy(new HashMapStorageStrategy(), elementsNumber);
+
+        testStrategy(new FileStorageStrategy(), elementsNumber);
+
+        testStrategy(new OurHashMapStorageStrategy(), elementsNumber);
     }
 
-    public static void testStrategy(StorageStrategy strategy, long elementsNumber){
+    public static void testStrategy(StorageStrategy strategy, long elementsNumber) throws IOException {
         Helper.printMessage(strategy.getClass().getSimpleName() + ":");
 
         Set<String> originalStrings = new HashSet<>();
@@ -42,7 +50,7 @@ public class Solution {
         }
         Helper.printMessage("");
     }
-    public static Set<Long> getIds(Shortener shortener, Set<String> strings){
+    public static Set<Long> getIds(Shortener shortener, Set<String> strings) throws IOException {
         Set<Long> set = new HashSet<>();
         for (String s : strings) {
             set.add(shortener.getId(s));
