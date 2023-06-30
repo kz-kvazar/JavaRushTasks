@@ -8,11 +8,14 @@ import java.io.IOException;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Modbus {
+    static List<String> list = new ArrayList<>();
+    static int index = 0;
     public static int regulatePower = 10;
-    public static Clip clip;
     static KGY kgy;
     static long now = new Date().getTime();
 
@@ -28,10 +31,15 @@ public class Modbus {
         int startRegister = 0; // Начальный регистр чтения
         int numRegisters = 12; // Количество регистров
 
-        alarm(1);
-
         kgy = new KGY();
-        Thread.sleep(100);
+        list.add("──────────█─█─█─█──█─█─█─█\n");
+        list.add("──────────█▄█▄█▄█▄▄█▄█▄█▄█\n");
+        list.add("▄▄────▄▄▄▄▄▄▄▄██▀██▄\n");
+        list.add("█████████████████████\n");
+        list.add("─██████████████▀███▀\n");
+        list.add("─██████████████\n");
+        list.add("─██▀██▀▀▀██▀██\n");
+        list.add("██─██─────██─██\n");
 
         // Формирование запроса Modbus
         byte[] request = {(byte) (transactionId >> 8), // Старший байт ID транзакции
@@ -65,8 +73,6 @@ public class Modbus {
 
                 Thread.sleep(2000);
 
-                clearConsole();
-
             }
 
         } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException e) {
@@ -75,51 +81,71 @@ public class Modbus {
         }
 
     }
+    public static List<String> getFrame(){
+        if (index < 30){
+            for (int j = 0, listSize = list.size(); j < listSize; j++) {
+                String s = list.get(j);
+                list.set(j,"  " + s);
+            }
+            index++;
+        } else {
+            for (int j = 0, listSize = list.size(); j < listSize; j++) {
+                list.set(j," " + list.get(j).replaceAll(" ", ""));
+            }
+            index = 0;
+        }
+        return list;
+    }
 
-    public static void operate(float kpa) throws InterruptedException {
-        if ((kpa > 5.5 || kpa < 4.5) && kpa > 0.2) {
+    public static void operate(double kpa, int powerConstant, int actualPower) throws InterruptedException {
+        // Определение кода ANSI для красного цвета
+        final String ANSI_RED = "\u001B[31m";
+        // Определение кода ANSI для сброса цвета
+        final String ANSI_RESET = "\u001B[0m";
 
-            // Определение кода ANSI для красного цвета
-            final String ANSI_RED = "\u001B[31m";
-            // Определение кода ANSI для сброса цвета
-            final String ANSI_RESET = "\u001B[0m";
+        if ((kpa > 5.2 || kpa < 4.3) && actualPower > 0) {
+            if (kpa > 6) {
+                if (regulatePower != 20) regulatePower = 20;
+            } else {
+                if (regulatePower != 10) regulatePower = 10;
+            }
 
-            int powerConstant = kgy.getPowerConstant();
-            int actualPower = kgy.getActualPower();
-
-            if (kpa > 5.5 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
-                System.out.println(ANSI_RED + "Давление перед ОП выше нормы: " + Math.round(kpa * 100) / 100.0 + " kPa.");
-                if (powerConstant <= 1540){
+            if (kpa > 5.2 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
+                if (powerConstant <= 1540) {
                     kgy.setPowerConstant((short) (powerConstant + regulatePower));
-                    System.out.println("Увеличиваем мощность на " + regulatePower + " кВт" + ANSI_RESET);
+                    System.out.println(ANSI_RED + "Увеличиваем мощность на " + regulatePower + " кВт" + ANSI_RESET);
                     //alarm(1);
                 }
                 now = new Date().getTime();
                 Thread.sleep(2000);
-            } else if (kpa > 4 && kpa < 6 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
-                System.out.println(ANSI_RED + "Давление перед ОП ниже нормы: " + Math.round(kpa * 100) / 100.0 + " kPa.");
-                if (powerConstant >= 820){
-                    kgy.setPowerConstant((short) (powerConstant - regulatePower));
-                    System.out.println("Уменьшаем мощность на " + regulatePower + " кВт" + ANSI_RESET);
+            } else if (kpa < 4.3 && kpa > 3.3 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
+                if (powerConstant >= 900) {
+                    kgy.setPowerConstant((short) (powerConstant - (regulatePower)*2));
+                    System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower)*2 + " кВт" + ANSI_RESET);
                     //alarm(1);
                 }
                 now = new Date().getTime();
                 Thread.sleep(2000);
-            } else if (kpa < 4 && (new Date().getTime() - now) >= 7_000) {
-                System.out.println(ANSI_RED + "Критическое давление перед ОП: " + Math.round(kpa * 100) / 100.0 + " kPa." );
-                if (powerConstant >= 900){
+            } else if (kpa < 3.3 && (new Date().getTime() - now) >= 20_000) {
+                if (powerConstant >= 900) {
                     kgy.setPowerConstant((short) (powerConstant - 100));
-                    System.out.println("Уменьшаем мощность на 100 кВт" + ANSI_RESET);
+                    System.out.println(ANSI_RED + "Уменьшаем мощность на 100 кВт" + ANSI_RESET);
                 }
                 now = new Date().getTime();
                 alarm(3);
                 Thread.sleep(2000);
             }
-        } else {
-            System.out.println("Давление перед ОП " + Math.round(kpa * 100) / 100.0 + " kPa");
+        }
+        else {
+            if (powerConstant != 900) {
+                kgy.setPowerConstant((short) 900);
+                System.out.println(ANSI_RED + " Устанавливаю константу мощности на 900 кВт" + ANSI_RESET);
+            } else {
+                System.out.println(ANSI_RED + "КГУ остановленна!!!" + ANSI_RESET);
+            }
+            Thread.sleep(2000);
         }
     }
-
     public static void alarm(int times) {
         File soundFile = new File("C:\\Windows\\Media\\" + "Windows Background.wav");
         try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile)) {
@@ -131,18 +157,23 @@ public class Modbus {
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ignored) {
             System.out.println(ignored);
         }
-
     }
-
     public static void logger(byte[] read) throws UnsupportedAudioFileException, LineUnavailableException, IOException, InterruptedException {
         ByteBuffer byteBuffer = ByteBuffer.wrap(read).order(ByteOrder.BIG_ENDIAN);
-        float op = byteBuffer.getFloat();
-        System.out.println("Напор конденсата " + (int) byteBuffer.getFloat() + " mPa");
-        System.out.println("Давление перед GTS " + (int) byteBuffer.getFloat() + " kPa");
-        System.out.println("Давление после GTS " + (int) byteBuffer.getFloat() + " kPa");
-        System.out.println("СН4 ВНС-1 " + (int) byteBuffer.getFloat() + " %");
-        System.out.println("СН4 ВНС-2 " + (int) byteBuffer.getFloat() + " %");
-        operate(op);
+        double op = Math.round(byteBuffer.getFloat() * 100) / 100.0;
+        int powerConstant = kgy.getPowerConstant();
+        int actualPower = kgy.getActualPower();
+        clearConsole();
+        String registr2 = "Напор конденсата " + (int) byteBuffer.getFloat() + " mPa";
+        String registr3 = "Давление перед GTS " + (int) byteBuffer.getFloat() + " kPa";
+        String registr4 = "Давление после GTS " + (int) byteBuffer.getFloat() + " kPa";
+        String registr5 = "СН4 ВНС-1 " + (int) byteBuffer.getFloat() + " %";
+        String registr6 = "СН4 ВНС-2 " + (int) byteBuffer.getFloat() + " %";
+        System.out.println("\u001B[32m" + "Давление перед ОП " + op + " kPa");
+        System.out.println("Уставка мощности: " + powerConstant + "кВт");
+        System.out.println("Активная мощность: " + actualPower + "кВт" + "\u001B[0m");
+        System.out.println(getFrame());
+        operate(op, powerConstant, actualPower);
     }
 
     public static void clearConsole() {
@@ -191,7 +222,7 @@ public class Modbus {
                 outputStream.write(request);
                 outputStream.flush();
 
-                Thread.sleep(200);
+                Thread.sleep(100);
 
                 long skipped = inputStream.skip(9);
                 short aShort = inputStream.readShort();
@@ -228,7 +259,7 @@ public class Modbus {
                 outputStream.write(setPower);
                 outputStream.flush();
 
-                Thread.sleep(200);
+                Thread.sleep(100);
                 byte[] result = new byte[inputStream.available()];
                 int bytesCount = inputStream.read(result);
             } catch (IOException | InterruptedException ignored) {
@@ -256,7 +287,7 @@ public class Modbus {
                 outputStream.write(request);
                 outputStream.flush();
 
-                Thread.sleep(200);
+                Thread.sleep(100);
 
                 long skipped = inputStream.skip(9);
                 short aShort = inputStream.readShort();
@@ -272,7 +303,6 @@ public class Modbus {
 
             return 1000;
         }
-
     }
 }
 
