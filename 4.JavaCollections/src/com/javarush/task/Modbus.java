@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Modbus {
+    public static int regulatePower = 10;
     static List<String> list = new ArrayList<>();
     static int index = 0;
-    public static int regulatePower = 10;
     static KGY kgy;
     static long now = new Date().getTime();
 
@@ -81,16 +81,17 @@ public class Modbus {
         }
 
     }
-    public static List<String> getFrame(){
-        if (index < 30){
+
+    public static List<String> getFrame() {
+        if (index < 30) {
             for (int j = 0, listSize = list.size(); j < listSize; j++) {
                 String s = list.get(j);
-                list.set(j,"  " + s);
+                list.set(j, "  " + s);
             }
             index++;
         } else {
             for (int j = 0, listSize = list.size(); j < listSize; j++) {
-                list.set(j," " + list.get(j).replaceAll(" ", ""));
+                list.set(j, " " + list.get(j).replaceAll(" ", ""));
             }
             index = 0;
         }
@@ -120,8 +121,8 @@ public class Modbus {
                 Thread.sleep(2000);
             } else if (kpa < 4.3 && kpa > 3.3 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
                 if (powerConstant >= 900) {
-                    kgy.setPowerConstant((short) (powerConstant - (regulatePower)*2));
-                    System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower)*2 + " кВт" + ANSI_RESET);
+                    kgy.setPowerConstant((short) (powerConstant - (regulatePower) * 2));
+                    System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower) * 2 + " кВт" + ANSI_RESET);
                     //alarm(1);
                 }
                 now = new Date().getTime();
@@ -135,8 +136,7 @@ public class Modbus {
                 alarm(3);
                 Thread.sleep(2000);
             }
-        }
-        else {
+        } else if (actualPower <= 0 && kpa < 1) {
             if (powerConstant != 900) {
                 kgy.setPowerConstant((short) 900);
                 System.out.println(ANSI_RED + " Устанавливаю константу мощности на 900 кВт" + ANSI_RESET);
@@ -146,6 +146,7 @@ public class Modbus {
             Thread.sleep(2000);
         }
     }
+
     public static void alarm(int times) {
         File soundFile = new File("C:\\Windows\\Media\\" + "Windows Background.wav");
         try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile)) {
@@ -158,6 +159,7 @@ public class Modbus {
             System.out.println(ignored);
         }
     }
+
     public static void logger(byte[] read) throws UnsupportedAudioFileException, LineUnavailableException, IOException, InterruptedException {
         ByteBuffer byteBuffer = ByteBuffer.wrap(read).order(ByteOrder.BIG_ENDIAN);
         double op = Math.round(byteBuffer.getFloat() * 100) / 100.0;
