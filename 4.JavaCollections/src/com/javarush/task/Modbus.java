@@ -32,6 +32,7 @@ public class Modbus {
         int numRegisters = 12; // Количество регистров
 
         kgy = new KGY();
+
         list.add("──────────█─█─█─█──█─█─█─█\n");
         list.add("──────────█▄█▄█▄█▄▄█▄█▄█▄█\n");
         list.add("▄▄────▄▄▄▄▄▄▄▄██▀██▄\n");
@@ -76,8 +77,9 @@ public class Modbus {
             }
 
         } catch (IOException | InterruptedException | LineUnavailableException | UnsupportedAudioFileException e) {
-            System.out.println(e);
             alarm(3);
+            System.out.println(e);
+            Thread.sleep(2000);
         }
 
     }
@@ -147,7 +149,7 @@ public class Modbus {
         }
     }
 
-    public static void alarm(int times) {
+    public static void alarm(int times) throws InterruptedException {
         File soundFile = new File("C:\\Windows\\Media\\" + "Windows Background.wav");
         try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile)) {
 
@@ -157,6 +159,7 @@ public class Modbus {
             clip.start();
         } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ignored) {
             System.out.println(ignored);
+            Thread.sleep(2000);
         }
     }
 
@@ -178,7 +181,7 @@ public class Modbus {
         operate(op, powerConstant, actualPower);
     }
 
-    public static void clearConsole() {
+    public static void clearConsole() throws InterruptedException {
         try {
             final String os = System.getProperty("os.name");
 
@@ -189,8 +192,9 @@ public class Modbus {
                 System.out.flush();
             }
         } catch (final Exception ignored) {
-            System.out.println(ignored);
             alarm(3);
+            System.out.println(ignored);
+            Thread.sleep(2000);
         }
     }
 
@@ -206,7 +210,7 @@ public class Modbus {
         int dataLength = 6; // Длина данных в пакете (байты)
         int slaveAddress = 1; // Адрес устройства
 
-        public int getPowerConstant() {
+        public int getPowerConstant() throws InterruptedException {
             request = new byte[]{(byte) (transactionId >> 8), // Старший байт ID транзакции
                     (byte) (transactionId & 0xFF), // Младший байт ID транзакции
                     (byte) (protocolId >> 8), // Старший байт ID протокола
@@ -233,14 +237,15 @@ public class Modbus {
                 int bytesCount = inputStream.read(result);
                 return aShort;
             } catch (IOException | InterruptedException ignored) {
-                alarm(3);
                 System.out.println("\u001B[31m" + "КГУ не отвечает. Регулирование невозможно!" + "\u001B[0m");
+                alarm(3);
+                Thread.sleep(2000);
             }
 
             return 1000;
         }
 
-        public void setPowerConstant(short power) {
+        public void setPowerConstant(short power) throws InterruptedException {
             setPower = new byte[]{(byte) (transactionId >> 8), // Старший байт ID транзакции
                     (byte) (transactionId & 0xFF), // Младший байт ID транзакции
                     (byte) (protocolId >> 8), // Старший байт ID протокола
@@ -265,13 +270,14 @@ public class Modbus {
                 byte[] result = new byte[inputStream.available()];
                 int bytesCount = inputStream.read(result);
             } catch (IOException | InterruptedException ignored) {
-                System.out.println(ignored);
                 alarm(3);
+                System.out.println(ignored);
+                Thread.sleep(2000);
             }
 
         }
 
-        public int getActualPower() {
+        public int getActualPower() throws InterruptedException {
             request = new byte[]{(byte) (transactionId >> 8), // Старший байт ID транзакции
                     (byte) (transactionId & 0xFF), // Младший байт ID транзакции
                     (byte) (protocolId >> 8), // Старший байт ID протокола
@@ -301,6 +307,7 @@ public class Modbus {
                 alarm(3);
                 System.out.println("\u001B[31m" + "КГУ не отвечает. Регулирование невозможно!" + "\u001B[0m");
                 System.out.println(ignored);
+                Thread.sleep(2000);
             }
 
             return 1000;
