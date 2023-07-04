@@ -481,10 +481,10 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         if (matcher.group(2) != null) {
             field2 = matcher.group(3);
             value = matcher.group(4);
+        }
         if (matcher.group(5) != null) {
             after = readDate(matcher.group(6));
             before = readDate(matcher.group(7));
-            }
         }
 
 
