@@ -141,6 +141,7 @@ public class Modbus {
         } else if (actualPower <= 0 && kpa < 1) {
             if (powerConstant != 900) {
                 kgy.setPowerConstant((short) 900);
+                alarm(3);
                 System.out.println(ANSI_RED + " Устанавливаю константу мощности на 900 кВт" + ANSI_RESET);
             } else {
                 System.out.println(ANSI_RED + "КГУ остановленна!!!" + ANSI_RESET);

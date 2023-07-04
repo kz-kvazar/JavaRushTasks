@@ -16,9 +16,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery {
-    private Path logDir;
-    private List<LogEntity> logEntities = new ArrayList<>();
-    private DateFormat simpleDateFormat = new SimpleDateFormat("d.M.yyyy H:m:s");
+    private final Path logDir;
+    private final List<LogEntity> logEntities = new ArrayList<>();
+    private final DateFormat simpleDateFormat = new SimpleDateFormat("d.M.yyyy H:m:s");
 
     public LogParser(Path logDir) {
         this.logDir = logDir;
@@ -183,8 +183,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<String> result = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getEvent().equals(Event.SOLVE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getEvent().equals(Event.SOLVE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     result.add(logEntities.get(i).getUser());
                 }
             }
@@ -210,8 +209,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<String> result = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getEvent().equals(Event.DONE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getEvent().equals(Event.DONE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     result.add(logEntities.get(i).getUser());
                 }
             }
@@ -224,8 +222,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> result = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(event)) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(event)) {
                     result.add(logEntities.get(i).getDate());
                 }
             }
@@ -264,8 +261,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> set = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(Event.LOGIN)) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(Event.LOGIN)) {
                     set.add(logEntities.get(i).getDate());
                 }
             }
@@ -275,8 +271,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         }
         Date minDate = set.iterator().next();
         for (Date date : set) {
-            if (date.getTime() < minDate.getTime())
-                minDate = date;
+            if (date.getTime() < minDate.getTime()) minDate = date;
         }
         return minDate;
     }
@@ -286,9 +281,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> set = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(Event.SOLVE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(Event.SOLVE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     set.add(logEntities.get(i).getDate());
                 }
             }
@@ -298,8 +291,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         }
         Date minDate = set.iterator().next();
         for (Date date : set) {
-            if (date.getTime() < minDate.getTime())
-                minDate = date;
+            if (date.getTime() < minDate.getTime()) minDate = date;
         }
         return minDate;
     }
@@ -309,9 +301,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> set = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(Event.DONE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(Event.DONE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     set.add(logEntities.get(i).getDate());
                 }
             }
@@ -321,8 +311,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         }
         Date minDate = set.iterator().next();
         for (Date date : set) {
-            if (date.getTime() < minDate.getTime())
-                minDate = date;
+            if (date.getTime() < minDate.getTime()) minDate = date;
         }
         return minDate;
     }
@@ -332,8 +321,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> result = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(Event.WRITE_MESSAGE)) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(Event.WRITE_MESSAGE)) {
                     result.add(logEntities.get(i).getDate());
                 }
             }
@@ -346,8 +334,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         Set<Date> result = new HashSet<>();
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getUser().equals(user)
-                        && logEntities.get(i).getEvent().equals(Event.DOWNLOAD_PLUGIN)) {
+                if (logEntities.get(i).getUser().equals(user) && logEntities.get(i).getEvent().equals(Event.DOWNLOAD_PLUGIN)) {
                     result.add(logEntities.get(i).getDate());
                 }
             }
@@ -428,8 +415,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         int quantity = 0;
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getEvent().equals(Event.SOLVE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getEvent().equals(Event.SOLVE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     quantity++;
                 }
             }
@@ -442,8 +428,7 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
         int quantity = 0;
         for (int i = 0; i < logEntities.size(); i++) {
             if (dateBetweenDates(logEntities.get(i).getDate(), after, before)) {
-                if (logEntities.get(i).getEvent().equals(Event.DONE_TASK)
-                        && logEntities.get(i).getEventAdditionalParameter() == task) {
+                if (logEntities.get(i).getEvent().equals(Event.DONE_TASK) && logEntities.get(i).getEventAdditionalParameter() == task) {
                     quantity++;
                 }
             }
@@ -485,13 +470,38 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     public Set<Object> execute(String query) {
         Set<Object> result = new HashSet<>();
         String field;
-        Pattern pattern = Pattern.compile("get (ip|user|date|event|status)");
+        String field2 = null;
+        String value = null;
+        Date before = null;
+        Date after = null;
+        Pattern pattern = Pattern.compile("get (ip|user|date|event|status)" + "( for (ip|user|date|event|status) = \"(.*?)\")?" + "( and date between \"(.*?)\" and \"(.*?)\")?");
         Matcher matcher = pattern.matcher(query);
         matcher.find();
         field = matcher.group(1);
+        if (matcher.group(2) != null) {
+            field2 = matcher.group(3);
+            value = matcher.group(4);
+        if (matcher.group(5) != null) {
+            after = readDate(matcher.group(6));
+            before = readDate(matcher.group(7));
+            }
+        }
+
 
         for (int i = 0; i < logEntities.size(); i++) {
-            result.add(getCurrentValue(logEntities.get(i), field));
+            Object currentValue = getCurrentValue(logEntities.get(i), field);
+            if (dateBetweenDates((Date) getCurrentValue(logEntities.get(i), "date"), after, before)) {
+                if (field2 == null || value.isEmpty()) {
+                    result.add(currentValue);
+                } else if (field2.equals("date")) {
+                    Date readDate = readDate(value);
+                    if (readDate.equals(getCurrentValue(logEntities.get(i), field2))) {
+                        result.add(currentValue);
+                    }
+                } else if (value.equals(getCurrentValue(logEntities.get(i), field2).toString())) {
+                    result.add(currentValue);
+                }
+            }
         }
         return result;
     }
@@ -636,12 +646,12 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQ
     }
 
     private class LogEntity {
-        private String ip;
-        private String user;
-        private Date date;
-        private Event event;
-        private int eventAdditionalParameter;
-        private Status status;
+        private final String ip;
+        private final String user;
+        private final Date date;
+        private final Event event;
+        private final int eventAdditionalParameter;
+        private final Status status;
 
         public LogEntity(String ip, String user, Date date, Event event, int eventAdditionalParameter, Status status) {
             this.ip = ip;
