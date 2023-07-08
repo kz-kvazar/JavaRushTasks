@@ -6,6 +6,7 @@ package com.javarush.task.task38.task3812;
 
 public class Solution {
     public static void main(String[] args) {
+
         printFullyQualifiedNames(Solution.class);
         printFullyQualifiedNames(SomeTest.class);
 
