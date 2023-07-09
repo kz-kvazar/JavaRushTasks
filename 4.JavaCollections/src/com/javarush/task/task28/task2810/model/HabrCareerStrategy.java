@@ -10,34 +10,34 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HHStrategy implements Strategy {
+public class HabrCareerStrategy implements Strategy{
 
-    private static final String URL_FORMAT = "https://hh.ru/search/vacancy?text=java+%s&page=%d";
+    private static final String URL_FORMAT = "https://career.habr.com/vacancies?q=java+%s&page=%d";
 
     @Override
     public List<Vacancy> getVacancies(String searchString) {
         List<Vacancy> allVacancies = new ArrayList<>();
-
         int page = 0;
         try {
             do {
                 Document doc = getDocument(searchString, page);
 
-                Elements vacanciesHtmlList = doc.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy");
+                Elements vacanciesHtmlList = doc.getElementsByClass("job");
 
                 if (vacanciesHtmlList.isEmpty()) break;
 
                 for (Element element : vacanciesHtmlList) {
-                    Elements links = element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-title");
-                    Elements locations = element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-address");
-                    Elements companyName = element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-employer");
-                    Elements salary = element.getElementsByAttributeValue("data-qa", "vacancy-serp__vacancy-compensation");
+                    Elements title = element.getElementsByClass("title");
+                    Elements links = title.get(0).getElementsByTag("a");
+                    Elements locations = element.getElementsByClass("location");
+                    Elements companyName = element.getElementsByClass("company_name");
+                    Elements salary = element.getElementsByClass("count");
 
                     Vacancy vacancy = new Vacancy();
-                    vacancy.setSiteName("hh.ru");
+                    vacancy.setSiteName("career.habr.com");
                     vacancy.setTitle(links.get(0).text());
-                    vacancy.setUrl(links.get(0).attr("href"));
-                    vacancy.setCity(locations.get(0).text());
+                    vacancy.setUrl("https://career.habr.com" + links.get(0).attr("href"));
+                    vacancy.setCity(locations.size() > 0 ? locations.get(0).text() : "");
                     vacancy.setCompanyName(companyName.get(0).text());
                     vacancy.setSalary(salary.size() > 0 ? salary.get(0).text() : "");
 
@@ -52,12 +52,10 @@ public class HHStrategy implements Strategy {
 
         return allVacancies;
     }
-
     protected Document getDocument(String searchString, int page) throws IOException {
         return Jsoup.connect(String.format(URL_FORMAT, searchString, page))
-                .userAgent("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36")
-                .referrer("https://hh.ru/")
+                .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36")
+                .referrer("https://career.habr.com/")
                 .get();
     }
-
 }
