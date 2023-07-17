@@ -58,7 +58,8 @@ public class Modbus {
         };
 
 
-        try (Socket socket = new Socket(host, port); DataInputStream inputStream = new DataInputStream(socket.getInputStream()); DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream())) {
+        try (Socket socket = new Socket(host, port); DataInputStream inputStream = new DataInputStream(socket.getInputStream());
+             DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream())) {
 
             while (true) {
                 outputStream.write(request);
@@ -151,16 +152,26 @@ public class Modbus {
     }
 
     public static void alarm(int times) throws InterruptedException {
-        File soundFile = new File("C:\\Windows\\Media\\" + "Windows Background.wav");
-        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile)) {
+        String audioFilePath = ("C:\\Windows\\Media\\" + "tada.wav");
+        try (AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(new File(audioFilePath))) {
+            AudioFormat format = audioInputStream.getFormat();
+            DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
 
-            Clip clip = AudioSystem.getClip();
-            clip.open(audioInputStream);
-            clip.loop(times);
-            clip.start();
-        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException ignored) {
-            System.out.println(ignored);
-            Thread.sleep(2000);
+            SourceDataLine line = (SourceDataLine) AudioSystem.getLine(info);
+            line.open(format);
+            line.start();
+
+            byte[] buffer = new byte[4096];
+            int bytesRead = 0;
+
+            while ((bytesRead = audioInputStream.read(buffer)) != -1) {
+                line.write(buffer, 0, bytesRead);
+            }
+            line.drain();
+            line.stop();
+            line.close();
+        } catch (UnsupportedAudioFileException | LineUnavailableException | IOException e) {
+            System.out.println("no such file");
         }
     }
 
