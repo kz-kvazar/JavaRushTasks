@@ -14,7 +14,9 @@ public class CurrencyManipulator {
     public String getCurrencyCode() {
         return currencyCode;
     }
-
+    public boolean hasMoney(){
+        return !denominations.isEmpty();
+    }
     public void addAmount(int denomination, int count) {
         if (denominations.containsKey(denomination)) {
             Integer balans = denominations.get(denomination);

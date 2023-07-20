@@ -34,8 +34,8 @@ public class ConsoleHelper {
             result = readString();
             String[] stringsResult = result.split(" ");
             try{
-            Integer denomination = Integer.parseInt(stringsResult[0]);
-            Integer count = Integer.parseInt(stringsResult[1]);
+            int denomination = Integer.parseInt(stringsResult[0]);
+            int count = Integer.parseInt(stringsResult[1]);
                 if (denomination > 0 && count >0 && stringsResult.length == 2){
                     return stringsResult;
                 }else writeMessage("Неверные данные.");
@@ -44,4 +44,21 @@ public class ConsoleHelper {
             }
         }
     }
+    public static Operation askOperation(){
+
+        while (true){
+            ConsoleHelper.writeMessage("Please choose an operation desired or type 'EXIT' for exiting");
+            ConsoleHelper.writeMessage("\t 1 - operation.INFO");
+            ConsoleHelper.writeMessage("\t 2 - operation.DEPOSIT");
+            ConsoleHelper.writeMessage("\t 3 - operation.WITHDRAW");
+            ConsoleHelper.writeMessage("\t 4 - operation.EXIT");
+            Integer i = Integer.parseInt(ConsoleHelper.readString().trim());
+            try {
+                return Operation.getAllowableOperationByOrdinal(i);
+            } catch (IllegalArgumentException e) {
+                writeMessage("Не верно выбранная операция");
+            }
+        }
+    }
+
 }

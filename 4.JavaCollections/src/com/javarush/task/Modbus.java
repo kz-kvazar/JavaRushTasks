@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Modbus {
+    private static int maxPower = 1560;
     public static int regulatePower = 10;
     static List<String> list = new ArrayList<>();
     static int index = 0;
@@ -107,25 +108,26 @@ public class Modbus {
         // Определение кода ANSI для сброса цвета
         final String ANSI_RESET = "\u001B[0m";
 
-        if ((kpa > 5.2 || kpa < 4.3) && actualPower > 0) {
+        if ((kpa > 5.2 || kpa < 4.3) && actualPower > 0 || actualPower > maxPower) {
             if (kpa > 6) {
                 if (regulatePower != 20) regulatePower = 20;
             } else {
                 if (regulatePower != 10) regulatePower = 10;
             }
 
-            if (kpa > 5.2 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
-                if (powerConstant <= 1540) {
+            if (kpa > 5.2 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50 && actualPower < maxPower) {
+                if (powerConstant <= maxPower) {
                     kgy.setPowerConstant((short) (powerConstant + regulatePower));
                     System.out.println(ANSI_RED + "Увеличиваем мощность на " + regulatePower + " кВт" + ANSI_RESET);
                     //alarm(1);
                 }
                 now = new Date().getTime();
                 Thread.sleep(2000);
-            } else if (kpa < 4.3 && kpa > 3.3 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50) {
+            } else if ((kpa < 4.3 && kpa > 3.3 && (powerConstant - actualPower) <= 50) || (actualPower > 1560 && (new Date().getTime() - now) >= 20_000)) {
                 if (powerConstant >= 900) {
-                    kgy.setPowerConstant((short) (powerConstant - (regulatePower) * 2));
-                    System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower) * 2 + " кВт" + ANSI_RESET);
+                    kgy.setPowerConstant((short) (powerConstant - (regulatePower)));
+                    System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower) + " кВт" + ANSI_RESET);
+                    checkMaxPower(actualPower);
                     //alarm(1);
                 }
                 now = new Date().getTime();
@@ -149,6 +151,10 @@ public class Modbus {
             }
             Thread.sleep(2000);
         }
+    }
+
+    private static void checkMaxPower(int actualPower) {
+        if (actualPower > maxPower) maxPower -= 10;
     }
 
     public static void alarm(int times) throws InterruptedException {
