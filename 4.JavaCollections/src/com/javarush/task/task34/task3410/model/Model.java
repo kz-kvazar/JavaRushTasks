@@ -40,4 +40,7 @@ public class Model {
     public GameObjects getGameObjects() {
         return gameObjects;
     }
+
+    public void move(Direction direction) {
+    }
 }

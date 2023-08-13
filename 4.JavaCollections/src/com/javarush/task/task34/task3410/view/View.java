@@ -30,6 +30,11 @@ public class View extends JFrame {
     public GameObjects getGameObjects(){
         return controller.getGameObjects();
     }
+    public void completed(int level){
+        update();
+        JOptionPane.showMessageDialog(null,"пользователь прошел "+ level + " уровень");
+        controller.startNextLevel();
+    }
     public void setEventListener(EventListener eventListener){
         field.setEventListener(eventListener);
     }
