@@ -8,11 +8,9 @@ import java.io.InputStreamReader;
 import java.util.ResourceBundle;
 
 public class ConsoleHelper {
-
-    private static ResourceBundle res = ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + ".resources.common");
     private static BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
-
-    public static void writeMessage(String message) {
+    private static ResourceBundle res = ResourceBundle.getBundle(CashMachine.class.getPackage().getName() + "resources.common");
+    public static void writeMessage(String message){
         System.out.println(message);
     }
 
@@ -26,59 +24,50 @@ public class ConsoleHelper {
             return text;
         } catch (IOException ignored) { //suppose it will never occur
         }
-        return null;
+        return "";
     }
-
     public static String askCurrencyCode() throws InterruptOperationException {
-        while (true) {
-            ConsoleHelper.writeMessage(res.getString("choose.currency.code"));
-            String currencyCode = ConsoleHelper.readString();
-            if (currencyCode == null || currencyCode.trim().length() != 3) {
-                ConsoleHelper.writeMessage(res.getString("invalid.data"));
-                continue;
-            }
-            return currencyCode.trim().toUpperCase();
+        writeMessage(res.getString("choose.currency.code"));
+        String result = "";
+        while (true){
+            result = readString();
+            if (result.matches("[a-zA-Z]+") && result.length() == 3){
+                return result.toUpperCase();
+            }else writeMessage(res.getString("invalid.data"));
         }
     }
-
     public static String[] getValidTwoDigits(String currencyCode) throws InterruptOperationException {
-        while (true) {
-            ConsoleHelper.writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
-            String s = ConsoleHelper.readString();
-            String[] split = null;
-            if (s == null || (split = s.split(" ")).length != 2) {
-                ConsoleHelper.writeMessage(res.getString("invalid.data"));
-            } else {
-                try {
-                    if (Integer.parseInt(split[0]) <= 0 || Integer.parseInt(split[1]) <= 0)
-                        ConsoleHelper.writeMessage(res.getString("invalid.data"));
-                } catch (NumberFormatException e) {
-                    ConsoleHelper.writeMessage(res.getString("invalid.data"));
-                    continue;
-                }
-                return split;
+        writeMessage(String.format(res.getString("choose.denomination.and.count.format"), currencyCode));
+        String result = "";
+        while (true){
+            result = readString();
+            String[] stringsResult = result.split(" ");
+            try{
+            int denomination = Integer.parseInt(stringsResult[0]);
+            int count = Integer.parseInt(stringsResult[1]);
+                if (denomination > 0 && count >0 && stringsResult.length == 2){
+                    return stringsResult;
+                }else writeMessage(res.getString("invalid.data"));
+            }catch (Exception e){
+                writeMessage(res.getString("invalid.data"));
             }
         }
     }
-
     public static Operation askOperation() throws InterruptOperationException {
-        while (true) {
-            ConsoleHelper.writeMessage(res.getString("choose.operation"));
-            ConsoleHelper.writeMessage("\t 1 - " + res.getString("operation.INFO"));
-            ConsoleHelper.writeMessage("\t 2 - " + res.getString("operation.DEPOSIT"));
-            ConsoleHelper.writeMessage("\t 3 - " + res.getString("operation.WITHDRAW"));
-            ConsoleHelper.writeMessage("\t 4 - " + res.getString("operation.EXIT"));
+
+        while (true){
+            ConsoleHelper.writeMessage("Please choose an operation desired or type 'EXIT' for exiting");
+            ConsoleHelper.writeMessage("\t 1 - operation.INFO");
+            ConsoleHelper.writeMessage("\t 2 - operation.DEPOSIT");
+            ConsoleHelper.writeMessage("\t 3 - operation.WITHDRAW");
+            ConsoleHelper.writeMessage("\t 4 - operation.EXIT");
             Integer i = Integer.parseInt(ConsoleHelper.readString().trim());
             try {
                 return Operation.getAllowableOperationByOrdinal(i);
             } catch (IllegalArgumentException e) {
-                ConsoleHelper.writeMessage(res.getString("invalid.data"));
+                writeMessage(res.getString("invalid.data"));
             }
         }
-    }
-
-    public static void printExitMessage() {
-        ConsoleHelper.writeMessage(res.getString("the.end"));
     }
 
 }

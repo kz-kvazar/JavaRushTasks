@@ -15,15 +15,15 @@ public class Solution {
         CarController controller = new CarController(model, view);
         controller.updateView();
 
-        // Update the model data
+        // Update the Model data
         controller.increaseSpeed(15);
         controller.updateView();
 
-        // Update the model data
+        // Update the Model data
         controller.increaseSpeed(50);
         controller.updateView();
 
-        // Update the model data
+        // Update the Model data
         controller.decreaseSpeed(7);
         controller.updateView();
     }

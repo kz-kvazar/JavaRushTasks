@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Modbus {
-    private static int maxPower = 1560;
+    private static int maxPower = 1510;
     public static int regulatePower = 10;
     static List<String> list = new ArrayList<>();
     static int index = 0;
@@ -115,8 +115,8 @@ public class Modbus {
                 if (regulatePower != 10) regulatePower = 10;
             }
 
-            if (kpa > 5.2 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50 && actualPower < maxPower) {
-                if (powerConstant <= maxPower) {
+            if (kpa > 5.2 && (new Date().getTime() - now) >= 20_000 && (powerConstant - actualPower) <= 50 && powerConstant < maxPower && actualPower < maxPower) {
+                if (powerConstant < 1530) {
                     kgy.setPowerConstant((short) (powerConstant + regulatePower));
                     System.out.println(ANSI_RED + "Увеличиваем мощность на " + regulatePower + " кВт" + ANSI_RESET);
                     //alarm(1);
@@ -127,7 +127,7 @@ public class Modbus {
                 if (powerConstant >= 900) {
                     kgy.setPowerConstant((short) (powerConstant - (regulatePower)));
                     System.out.println(ANSI_RED + "Уменьшаем мощность на " + (regulatePower) + " кВт" + ANSI_RESET);
-                    checkMaxPower(actualPower);
+                    checkMaxPower(actualPower, powerConstant);
                     //alarm(1);
                 }
                 now = new Date().getTime();
@@ -153,8 +153,11 @@ public class Modbus {
         }
     }
 
-    private static void checkMaxPower(int actualPower) {
-        if (actualPower > maxPower) maxPower -= 10;
+    private static void checkMaxPower(int actualPower , int powerConstant) {
+        if (actualPower > maxPower) {
+            maxPower = powerConstant - 10;
+            now = new Date().getTime();
+        }
     }
 
     public static void alarm(int times) throws InterruptedException {

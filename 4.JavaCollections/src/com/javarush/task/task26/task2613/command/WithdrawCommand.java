@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 class WithdrawCommand implements Command {
-    private ResourceBundle res = ResourceBundle.getBundle(CashMachine.RESOURCE_PATH + "withdraw");
+    private ResourceBundle res  = ResourceBundle.getBundle(CashMachine.class.getPackage() + "resources.withdraw");
 
     @Override
     public void execute() throws InterruptOperationException {
@@ -23,10 +23,10 @@ class WithdrawCommand implements Command {
 
         while (true) {
             try {
-                ConsoleHelper.writeMessage(res.getString("specify.amount"));
+                ConsoleHelper.writeMessage("Please specify integer amount for withdrawing.");
                 String s = ConsoleHelper.readString();
                 if (s == null) {
-                    ConsoleHelper.writeMessage(res.getString("specify.not.empty.amount"));
+                    ConsoleHelper.writeMessage("Please specify valid positive integer amount for withdrawing.");
                 } else {
                     try {
                         int amount = Integer.parseInt(s);
@@ -37,17 +37,17 @@ class WithdrawCommand implements Command {
                                 ConsoleHelper.writeMessage("\t" + item + " - " + denominations.get(item));
                             }
 
-                            ConsoleHelper.writeMessage(String.format(res.getString("success.format"), amount, currencyCode));
+                            ConsoleHelper.writeMessage(String.format("%d %s was withdrawn successfully", amount, currencyCode));
                             break;
                         } else {
-                            ConsoleHelper.writeMessage(res.getString("not.enough.money"));
+                            ConsoleHelper.writeMessage("Not enough money on your account, please try again");
                         }
                     } catch (NumberFormatException e) {
-                        ConsoleHelper.writeMessage(res.getString("specify.not.empty.amount"));
+                        ConsoleHelper.writeMessage("Please specify valid positive integer amount for withdrawing.");
                     }
                 }
             } catch (NotEnoughMoneyException e) {
-                ConsoleHelper.writeMessage(res.getString("exact.amount.not.available"));
+                ConsoleHelper.writeMessage("Exact amount is not available");
             }
         }
     }
